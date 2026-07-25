@@ -17,11 +17,11 @@ export function Coverage() {
       aria-labelledby="coverage-heading"
       className="relative border-t border-[var(--afi-hair-soft)] bg-[var(--afi-ground)]"
     >
-      <div className="mx-auto max-w-[1400px] px-6 pt-24 md:px-12 md:pt-32">
+      <div className="mx-auto max-w-[1400px] px-5 pt-20 sm:px-6 md:px-12 md:pt-32">
         <p className="afi-eyebrow">Service area</p>
         <h2
           id="coverage-heading"
-          className="afi-display mt-6 max-w-[22ch] text-4xl sm:text-5xl md:text-[3.4rem]"
+          className="afi-display mt-5 max-w-[22ch] text-[2rem] sm:text-5xl md:text-[3.4rem]"
         >
           If we can drive it in a morning, we cover it.
         </h2>
@@ -34,7 +34,7 @@ export function Coverage() {
       </div>
 
       {/* map as canvas, with the one vertical side rail on the page */}
-      <div className="relative mx-auto mt-14 max-w-[1400px] px-6 pb-20 md:px-12 md:pb-24">
+      <div className="relative mx-auto mt-10 max-w-[1400px] px-5 pb-16 sm:px-6 md:mt-14 md:px-12 md:pb-24">
         <div className="lg:grid lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-10">
             <CoverageMap />

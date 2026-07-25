@@ -31,9 +31,35 @@ const STATE_LABEL: Record<string, string> = {
   NC: "North Carolina",
 };
 
+/* Phones get a crop rather than the whole three state view. The crop box is
+   measured off the real 150 minute ring, so it frames exactly the area we
+   cover and nothing else. */
+function mobileCrop(d: string) {
+  const nums = d.match(/-?\d+(?:\.\d+)?/g) ?? [];
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (let i = 0; i + 1 < nums.length; i += 2) {
+    const x = Number(nums[i]);
+    const y = Number(nums[i + 1]);
+    if (x < x0) x0 = x;
+    if (x > x1) x1 = x;
+    if (y < y0) y0 = y;
+    if (y > y1) y1 = y;
+  }
+  const pad = 14;
+  const w = x1 - x0 + pad * 2;
+  const h = y1 - y0 + pad * 2;
+  const s = Math.min(1000 / w, 740 / h);
+  return {
+    "--afi-mz-s": s.toFixed(4),
+    "--afi-mz-x": `${(500 - s * ((x0 + x1) / 2)).toFixed(2)}px`,
+    "--afi-mz-y": `${(370 - s * ((y0 + y1) / 2)).toFixed(2)}px`,
+  } as CSSProperties;
+}
+
 export function CoverageMap() {
   const [bx, by] = data.base;
   const outer = data.rings[data.rings.length - 1];
+  const crop = mobileCrop(outer.d);
 
   return (
     <figure className="relative">
@@ -53,6 +79,7 @@ export function CoverageMap() {
           </radialGradient>
         </defs>
 
+        <g className="afi-map-zoom" style={crop}>
         {/* neighbouring states, kept faint so the three we cover read first */}
         {data.context.map((s) => (
           <path
@@ -119,7 +146,9 @@ export function CoverageMap() {
           return (
             <g
               key={c.name}
-              className={isTown ? "hidden md:inline" : undefined}
+              className={
+                isTown ? "hidden md:inline" : c.inside ? undefined : "afi-map-far"
+              }
               opacity={c.inside ? 1 : 0.42}
             >
               <circle
@@ -140,6 +169,7 @@ export function CoverageMap() {
                 />
               ) : null}
               <text
+                className={isBase ? "afi-map-base" : "afi-map-city"}
                 x={c.x + (isBase ? 18 : 8)}
                 y={c.y + (isBase ? 5 : 3.4)}
                 fill={isBase ? "#ede7da" : c.inside ? "#9fb0a6" : "#6c7f75"}
@@ -151,6 +181,7 @@ export function CoverageMap() {
               </text>
               {!isBase && !isTown ? (
                 <text
+                  className="afi-map-min"
                   x={c.x + 8}
                   y={c.y + 19}
                   fill="#4f6259"
@@ -166,6 +197,7 @@ export function CoverageMap() {
 
         {data.states.map((s, i) => (
           <text
+            className="afi-map-state"
             key={`lbl-${s.code}`}
             x={i === 0 ? 150 : i === 1 ? 690 : 690}
             y={i === 0 ? 640 : i === 1 ? 520 : 150}
@@ -177,6 +209,7 @@ export function CoverageMap() {
             {STATE_LABEL[s.code]?.toUpperCase()}
           </text>
         ))}
+        </g>
       </svg>
     </figure>
   );

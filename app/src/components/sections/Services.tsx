@@ -72,7 +72,7 @@ export function Services() {
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="relative overflow-hidden border-t border-[var(--afi-hair-soft)] px-6 py-24 md:px-12 md:py-32"
+      className="relative overflow-hidden border-t border-[var(--afi-hair-soft)] px-5 py-20 sm:px-6 md:px-12 md:py-32"
     >
       <span
         aria-hidden="true"
@@ -81,30 +81,30 @@ export function Services() {
       <div className="relative mx-auto max-w-[1400px]">
         <h2
           id="services-heading"
-          className="afi-display max-w-[24ch] text-4xl sm:text-5xl md:text-[3.4rem]"
+          className="afi-display max-w-[24ch] text-[2rem] sm:text-5xl md:text-[3.4rem]"
         >
           Eight things, all of them low voltage.
         </h2>
 
-        <ul className="mt-16 border-t border-[var(--afi-hair)]">
+        <ul className="mt-12 border-t border-[var(--afi-hair)] md:mt-16">
           {SERVICES.map((s, i) => (
             <li key={s.name} className="border-b border-[var(--afi-hair-soft)]">
               <a
                 href="#quote"
                 data-shown={shown}
-                className="afi-rise group flex items-start gap-5 py-7 md:gap-10 md:py-9"
+                className="afi-rise afi-step-x group flex items-start gap-4 py-6 md:gap-10 md:py-9"
                 style={
                   {
                     "--afi-rise-delay": `${i * 55}ms`,
                     "--afi-rise-y": "14px",
-                    /* off grid: each row steps a little further in */
-                    paddingLeft: `calc(${i % 4} * 0.9rem)`,
+                    /* off grid: each row steps in, desktop only (see styles) */
+                    "--afi-step": String(i % 4),
                   } as CSSProperties
                 }
               >
-                <s.Icon className="mt-1 h-7 w-7 shrink-0 text-[var(--afi-signal)] transition-transform duration-500 group-hover:scale-110 md:h-9 md:w-9 motion-reduce:transition-none" />
+                <s.Icon className="mt-1 h-6 w-6 shrink-0 text-[var(--afi-signal)] transition-transform duration-500 group-hover:scale-110 md:h-9 md:w-9 motion-reduce:transition-none" />
                 <div className="min-w-0 flex-1 md:grid md:grid-cols-12 md:gap-10">
-                  <h3 className="afi-display text-2xl leading-tight text-[var(--afi-bone)] transition-colors group-hover:text-[var(--afi-signal-lit)] md:col-span-5 md:text-[1.75rem] motion-reduce:transition-none">
+                  <h3 className="afi-display text-[1.375rem] leading-tight sm:text-2xl text-[var(--afi-bone)] transition-colors group-hover:text-[var(--afi-signal-lit)] md:col-span-5 md:text-[1.75rem] motion-reduce:transition-none">
                     {s.name}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-[var(--afi-bone-dim)] md:col-span-7 md:mt-0 md:text-base">

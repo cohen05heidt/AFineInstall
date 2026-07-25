@@ -47,6 +47,7 @@ export function makeStars(count: number): Star[] {
 }
 
 const clamp = (v: number, a = 0, b = 1) => (v < a ? a : v > b ? b : v);
+const compactHouse = (w: number) => w < 900;
 const ramp = (v: number, a: number, b: number) => {
   const t = clamp((v - a) / (b - a));
   return t * t * (3 - 2 * t);
@@ -306,7 +307,7 @@ function drawHouse(
   const a = ramp(cam, 2.5, 3.15) * (1 - ramp(cam, 3.55, 4));
   if (a <= 0.02) return;
   const top = sy(3.36, 1);
-  const wide = Math.min(w * 0.72, 760);
+  const wide = Math.min(w * (compactHouse(w) ? 0.88 : 0.72), 760);
   const tall = Math.min(h * 0.42, 340);
   const x0 = cx - wide / 2;
   ctx.save();
@@ -326,14 +327,14 @@ function drawHouse(
   ctx.stroke();
 
   const nodes: Array<[number, number, string]> = [
-    [0.13, 0.26, "WIFI"],
+    [0.14, 0.26, "WIFI"],
     [0.39, 0.26, "SOUND"],
     [0.64, 0.26, "TV"],
-    [0.88, 0.26, "CAMERAS"],
+    [0.86, 0.26, "CAMERAS"],
     [0.22, 0.76, "ALARM"],
     [0.72, 0.76, "PREWIRE"],
   ];
-  ctx.font = "500 9.5px 'Geist Mono', ui-monospace, monospace";
+  ctx.font = `500 ${compactHouse(w) ? 8 : 9.5}px 'Geist Mono', ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   nodes.forEach(([fx, fy, label], i) => {

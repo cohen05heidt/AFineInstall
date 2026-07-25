@@ -69,13 +69,13 @@ export function Gallery() {
     <section
       id="work"
       aria-labelledby="work-heading"
-      className="relative border-t border-[var(--afi-hair-soft)] px-6 py-24 md:px-12 md:py-32"
+      className="relative border-t border-[var(--afi-hair-soft)] px-5 py-20 sm:px-6 md:px-12 md:py-32"
     >
       <div className="mx-auto max-w-[1400px]">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <h2
             id="work-heading"
-            className="afi-display max-w-[18ch] text-4xl sm:text-5xl md:text-[3.4rem]"
+            className="afi-display max-w-[18ch] text-[2rem] sm:text-5xl md:text-[3.4rem]"
           >
             Finished jobs, photographed on the way out.
           </h2>
@@ -84,18 +84,18 @@ export function Gallery() {
           </p>
         </div>
 
-        <ul className="mt-16 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
+        <ul className="mt-12 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-4 sm:gap-y-10 md:mt-16 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
           {SHOTS.map((s, i) => (
             <li
               key={s.file}
               data-shown={shown}
-              className={`afi-rise group ${s.span ? "col-span-2 md:col-span-1" : ""}`}
+              className={`afi-rise afi-step-y group ${s.span ? "col-span-2 md:col-span-1" : ""}`}
               style={
                 {
                   "--afi-rise-delay": `${i * 70}ms`,
                   "--afi-rise-y": "26px",
-                  /* the diagonal: every column sits a step lower */
-                  marginTop: `calc(${i % 4} * 1.35rem)`,
+                  /* the diagonal: every column sits a step lower (see styles) */
+                  "--afi-step": String(i % 4),
                 } as CSSProperties
               }
             >

@@ -181,12 +181,12 @@ export function JourneyStage() {
             <section
               key={c.id}
               aria-labelledby="hero-heading"
-              className="flex h-[82dvh] flex-col justify-end px-6 pb-10 pt-24 md:h-[84dvh] md:px-12 md:pb-14"
+              className="flex h-[80dvh] flex-col justify-end px-5 pb-9 pt-20 sm:px-6 md:h-[84dvh] md:px-12 md:pb-14"
             >
               <p className="afi-eyebrow">{SITE.base}</p>
               <h1
                 id="hero-heading"
-                className="afi-display mt-4 max-w-[15ch] text-5xl sm:text-6xl md:text-7xl"
+                className="afi-display mt-4 max-w-[15ch] text-[2.75rem] leading-[0.98] sm:text-6xl md:text-7xl"
               >
                 From orbit to your{" "}
                 <span className="text-[var(--afi-signal)]">wall plate</span>.
@@ -203,14 +203,16 @@ export function JourneyStage() {
           ) : (
             <article
               key={c.id}
-              className="flex h-dvh flex-col justify-end px-6 pb-24 md:px-12 md:pb-28"
+              className="flex h-[86dvh] flex-col justify-end px-5 pb-16 sm:px-6 md:h-dvh md:px-12 md:pb-28"
             >
-              <div className="max-w-xl border-l border-[var(--afi-signal)] pl-6 md:pl-8">
-                <h2 className="afi-display text-3xl sm:text-4xl md:text-5xl">
+              <div className="max-w-xl border-l border-[var(--afi-signal)] pl-5 md:pl-8">
+                <h2 className="afi-display text-[1.75rem] sm:text-4xl md:text-5xl">
                   {c.heading}
                 </h2>
-                <p className="afi-body mt-5 text-base">{c.line}</p>
-                <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+                <p className="afi-body mt-4 text-[0.9375rem] sm:mt-5 sm:text-base">
+                  {c.line}
+                </p>
+                <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 sm:mt-6 sm:gap-x-6">
                   {c.tags.map((tag) => (
                     <li
                       key={tag}

@@ -12,12 +12,12 @@ export function PhoneSlab() {
   return (
     <a
       href={SITE.phoneHref}
-      className="group relative inline-flex items-baseline gap-3 overflow-hidden border border-[var(--afi-hair)] px-6 py-4 transition-transform active:translate-y-px"
+      className="group relative inline-flex items-baseline gap-2.5 overflow-hidden border border-[var(--afi-hair)] px-5 py-3.5 transition-transform active:translate-y-px sm:gap-3 sm:px-6 sm:py-4"
     >
       <span className="afi-mono relative z-10 text-xs uppercase tracking-[0.2em] text-[var(--afi-bone-faint)] transition-colors group-hover:text-[var(--afi-bone)]">
         Call
       </span>
-      <span className="afi-mono relative z-10 text-lg text-[var(--afi-bone)] md:text-xl">
+      <span className="afi-mono relative z-10 text-base text-[var(--afi-bone)] sm:text-lg md:text-xl">
         {SITE.phone}
       </span>
       <span className="absolute bottom-0 left-0 h-[3px] w-full origin-left scale-x-0 bg-[var(--afi-signal)] transition-transform duration-500 ease-out group-hover:scale-x-100 motion-reduce:transition-none" />
@@ -45,9 +45,9 @@ export function CoverageBanner() {
   return (
     <a
       href="#quote"
-      className="group flex w-full items-center justify-center gap-4 bg-[var(--afi-signal)] px-6 py-6 text-center transition-colors hover:bg-[var(--afi-signal-lit)] active:translate-y-px md:py-7"
+      className="group flex w-full items-center justify-center gap-4 bg-[var(--afi-signal)] px-5 py-6 text-center transition-colors hover:bg-[var(--afi-signal-lit)] active:translate-y-px sm:px-6 md:py-7"
     >
-      <span className="afi-display text-xl text-white md:text-2xl">
+      <span className="afi-display text-balance text-center text-lg text-white sm:text-xl md:text-2xl">
         Not sure if your place is in range
       </span>
       <span className="afi-mono hidden text-xs uppercase tracking-[0.22em] text-white/80 transition-transform duration-300 group-hover:translate-x-1 md:inline motion-reduce:transition-none">

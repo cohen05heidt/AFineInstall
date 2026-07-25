@@ -245,3 +245,30 @@
   .afi-ring, .afi-sweep, .afi-ping { animation: none !important; opacity: 1; }
   .afi-sweep { opacity: 0.35; }
 }
+
+/* ==========================================================================
+   Phone layout. Three things need to change below 768px: the off grid steps
+   have to give their width back, the map has to crop to the part of the
+   region that is actually covered, and the map type has to grow in user
+   units so it survives being scaled down to a 390px screen.
+   ========================================================================== */
+
+/* off grid stepping: desktop only, so narrow screens keep their full measure */
+.afi-step-x { padding-left: 0; }
+.afi-step-y { margin-top: 0; }
+@media (min-width: 768px) {
+  .afi-step-x { padding-left: calc(var(--afi-step, 0) * 0.9rem); }
+  .afi-step-y { margin-top: calc(var(--afi-step, 0) * 1.35rem); }
+}
+
+/* the map crops to the covered radius on phones */
+@media (max-width: 767px) {
+  .afi-map-zoom {
+    transform: translate(var(--afi-mz-x), var(--afi-mz-y)) scale(var(--afi-mz-s));
+  }
+  .afi-map-base { font-size: 40px; letter-spacing: 2.4px; }
+  .afi-map-city { font-size: 27px; }
+  .afi-map-min { font-size: 21px; }
+  .afi-map-state { display: none; }
+  .afi-map-far { display: none; }
+}

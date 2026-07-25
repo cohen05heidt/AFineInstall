@@ -15,13 +15,13 @@ export function Starlink() {
     <section
       id="starlink"
       aria-labelledby="starlink-heading"
-      className="relative border-t border-[var(--afi-hair-soft)] bg-[var(--afi-ground)] px-6 py-24 md:px-12 md:py-32"
+      className="relative border-t border-[var(--afi-hair-soft)] bg-[var(--afi-ground)] px-5 py-20 sm:px-6 md:px-12 md:py-32"
     >
       <div className="mx-auto grid max-w-[1400px] gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-7">
           <h2
             id="starlink-heading"
-            className="afi-display max-w-[20ch] text-4xl sm:text-5xl md:text-[3.4rem]"
+            className="afi-display max-w-[20ch] text-[2rem] sm:text-5xl md:text-[3.4rem]"
           >
             We sell Starlink, and we set it up right.
           </h2>
@@ -78,12 +78,12 @@ export function Starlink() {
         ].map(([value, label], i) => (
           <div
             key={label as string}
-            className={`px-2 pt-8 md:px-6 ${i > 0 ? "border-l border-[var(--afi-hair-soft)]" : ""}`}
+            className={`px-1.5 pt-6 sm:px-2 sm:pt-8 md:px-6 ${i > 0 ? "border-l border-[var(--afi-hair-soft)]" : ""}`}
           >
-            <p className="afi-mono text-[3rem] leading-none text-[var(--afi-bone)] sm:text-[4.5rem] md:text-[6rem]">
+            <p className="afi-mono text-[2.125rem] leading-none text-[var(--afi-bone)] sm:text-[4.5rem] md:text-[6rem]">
               {value as number}
             </p>
-            <p className="afi-mono mt-3 text-[0.625rem] uppercase tracking-[0.2em] text-[var(--afi-bone-faint)] sm:text-xs">
+            <p className="afi-mono mt-2.5 text-[0.5625rem] uppercase tracking-[0.12em] text-[var(--afi-bone-faint)] sm:mt-3 sm:text-xs sm:tracking-[0.2em]">
               {label as string}
             </p>
           </div>

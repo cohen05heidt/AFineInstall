@@ -3,7 +3,7 @@ import { Monogram, IconFacebook } from "./Brand";
 
 export function Footer() {
   return (
-    <footer className="border-t border-[var(--afi-hair)] bg-[var(--afi-ink)] px-6 py-14 md:px-12">
+    <footer className="border-t border-[var(--afi-hair)] bg-[var(--afi-ink)] px-5 py-12 sm:px-6 md:px-12 md:py-14">
       <div className="mx-auto flex max-w-[1400px] flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <Monogram className="h-10 w-10 text-[var(--afi-bone)]" />

@@ -64,10 +64,10 @@ export function Contact() {
       className="border-t border-[var(--afi-hair-soft)] lg:grid lg:grid-cols-2"
     >
       {/* left block: the details, on the raised colour */}
-      <div className="bg-[var(--afi-raised)] px-6 py-20 md:px-12 md:py-24">
+      <div className="bg-[var(--afi-raised)] px-5 py-16 sm:px-6 md:px-12 md:py-24">
         <h2
           id="quote-heading"
-          className="afi-display max-w-[16ch] text-4xl sm:text-5xl md:text-[3.4rem]"
+          className="afi-display max-w-[16ch] text-[2rem] sm:text-5xl md:text-[3.4rem]"
         >
           Tell us what you need done.
         </h2>
@@ -115,7 +115,7 @@ export function Contact() {
       </div>
 
       {/* right block: the form, back on the deep ground */}
-      <div className="bg-[var(--afi-ink)] px-6 py-20 md:px-12 md:py-24">
+      <div className="bg-[var(--afi-ink)] px-5 py-16 sm:px-6 md:px-12 md:py-24">
         {done ? (
           <div className="flex h-full flex-col justify-center">
             <span className="afi-mono text-xs uppercase tracking-[0.22em] text-[var(--afi-signal)]">
