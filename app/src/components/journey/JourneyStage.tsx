@@ -34,7 +34,7 @@ const CHAPTERS: Chapter[] = [
   {
     id: "rooftop",
     heading: "Mounted where it belongs.",
-    line: "Ridge, gable, pole or a shop roof. The dish goes where the sky is open and the cable takes the shortest honest path inside.",
+    line: "Ridge, gable, pole or a shop roof. Starlink goes where the sky is open and the cable takes the shortest honest path inside.",
     tags: ["Sealed penetrations", "Cable routed clean", "No dangling wire"],
   },
   {

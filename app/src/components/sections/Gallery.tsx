@@ -11,17 +11,17 @@ const GROUPS: Group[] = [
   {
     id: "starlink",
     label: "Starlink",
-    note: "Dishes up where the sky is open, routers mounted clean inside.",
+    note: "Up where the sky is open, and mounted clean inside.",
     shots: [
       {
         file: "starlink-ridge-mount",
-        caption: "Ridge mount, dish clear of the tree line",
-        alt: "Starlink dish mounted high on a shingle roof ridge, clear of a nearby tree, against a deep blue sky.",
+        caption: "Starlink ridge mount",
+        alt: "Starlink mounted high on a shingle roof ridge against a deep blue sky.",
       },
       {
         file: "starlink-shop-roof",
-        caption: "Dish and a camera on a metal shop roof",
-        alt: "Starlink dish and a security camera mounted on the eave of a metal roofed shop against a blue sky.",
+        caption: "Starlink roof mount",
+        alt: "Starlink mounted on the eave of a metal roofed shop against a blue sky.",
       },
       {
         file: "starlink-router-trim",
