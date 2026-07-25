@@ -1,21 +1,32 @@
 /* The journey world. Pure drawing, no React and no browser globals at module
    scope, so it is safe to import from a server rendered route.
 
-   The world is one tall vertical strip five viewports deep. The visitor's
+   The world is one tall vertical strip four viewports deep. The visitor's
    scroll moves a single camera value down it, which is why position and
    velocity stay continuous across every seam and why reverse scroll is just
    the same function run backwards.
 
-     band 0  ORBIT      stars, the earth limb, the satellite, the beam starts
-     band 1  LOCK       the beam narrows through altitude ticks and locks
-     band 2  ROOFTOP    a roofline arrives, the dish takes the beam
-     band 3  INSIDE     the house opens up and rooms light in sequence
-     band 4  TERRITORY  the camera pulls back until the house is one dot
+     band 0  ORBIT    stars, the earth limb, the orbital track, the satellite
+     band 1  LOCK     the beam narrows through altitude ticks and locks
+     band 2  ROOFTOP  a roofline arrives, the dish takes the beam
+     band 3  INSIDE   the house opens up and rooms light in sequence
+
+   The drive radius used to be a fifth band drawn here as a radar. It is now
+   told properly by the projected map in the coverage section, so the journey
+   ends inside the house and hands off instead of repeating itself.
 */
 
-export const BANDS = 5;
+export const BANDS = 4;
 export const TRAVEL = BANDS - 1;
-export const STILL_CAM = 2.42;
+/* the reduced motion still: dish on the ridge, beam landed */
+export const STILL_CAM = 2.05;
+
+/* where things sit in world space, measured in viewport heights */
+const SAT_Y = -0.13;
+const DISH_Y = 2.1;
+const ROOF_Y = 2.34;
+const CABLE_END_Y = 2.78;
+const HOUSE_Y = 2.74;
 
 const INK = "#071410";
 const HAIR = "#25443a";
@@ -47,11 +58,11 @@ export function makeStars(count: number): Star[] {
 }
 
 const clamp = (v: number, a = 0, b = 1) => (v < a ? a : v > b ? b : v);
-const compactHouse = (w: number) => w < 900;
 const ramp = (v: number, a: number, b: number) => {
   const t = clamp((v - a) / (b - a));
   return t * t * (3 - 2 * t);
 };
+const compactHouse = (w: number) => w < 900;
 
 export type Frame = {
   ctx: CanvasRenderingContext2D;
@@ -69,35 +80,24 @@ export function drawWorld({ ctx, w, h, cam, t, stars, compact, still }: Frame) {
   ctx.fillStyle = INK;
   ctx.fillRect(0, 0, w, h);
 
-  const pull = ramp(cam, 3.05, 4);
-  const worldScale = 1 - pull * 0.82;
   const cx = w / 2;
   const anchorY = h * 0.52;
-  const sy = (worldY: number, plane = 1) =>
-    anchorY + (worldY - cam * plane) * h * worldScale;
+  const sy = (worldY: number) => anchorY + (worldY - cam) * h;
 
-  drawStars(ctx, w, h, cam, t, stars, still, worldScale);
-  drawOrbit(ctx, w, h, cam, sy, cx, worldScale);
-  drawEarth(ctx, w, h, cam, worldScale, cx);
-
-  ctx.save();
-  ctx.translate(cx, 0);
-  ctx.scale(worldScale, 1);
-  ctx.translate(-cx, 0);
-  drawBeam(ctx, w, h, cam, t, sy, cx, still, worldScale);
+  drawStars(ctx, w, h, cam, t, stars, still);
+  drawOrbit(ctx, w, h, cam, sy, cx);
+  drawEarth(ctx, w, h, cam, cx);
+  drawBeam(ctx, w, h, cam, t, sy, cx, still);
   drawTicks(ctx, w, cam, sy, cx, compact);
   drawRoof(ctx, w, h, cam, sy, cx);
   drawHouse(ctx, w, h, cam, t, sy, cx, still);
-  ctx.restore();
-
-  drawTerritory(ctx, w, h, cam, t, cx, anchorY, still);
 }
 
 function drawStars(
   ctx: CanvasRenderingContext2D, w: number, h: number, cam: number,
-  t: number, stars: Star[], still: boolean, worldScale: number,
+  t: number, stars: Star[], still: boolean,
 ) {
-  const fade = 1 - ramp(cam, 2.1, 3.4) * 0.72;
+  const fade = 1 - ramp(cam, 1.8, 2.9) * 0.72;
   if (fade <= 0.02) return;
   const planeRate = [0.16, 0.3, 0.46];
   for (const s of stars) {
@@ -108,20 +108,49 @@ function drawStars(
     ctx.globalAlpha = fade * twinkle * (0.42 + s.plane * 0.3);
     ctx.fillStyle = s.plane === 2 ? BONE : BONE_DIM;
     ctx.beginPath();
-    ctx.arc(s.x * w, py, s.r * worldScale, 0, Math.PI * 2);
+    ctx.arc(s.x * w, py, s.r, 0, Math.PI * 2);
     ctx.fill();
   }
   ctx.globalAlpha = 1;
 }
 
-function drawEarth(
+/* the orbital track the satellite rides, first band only */
+function drawOrbit(
   ctx: CanvasRenderingContext2D, w: number, h: number, cam: number,
-  worldScale: number, cx: number,
+  sy: (y: number) => number, cx: number,
 ) {
-  const a = (1 - ramp(cam, 0.9, 2.2)) * 0.95;
+  const a = (1 - ramp(cam, 0.45, 1.4)) * 0.85;
   if (a <= 0.02) return;
-  const r = Math.max(w, h) * 2.1 * worldScale;
-  const top = h * 0.6 + cam * h * 0.42;
+  const y = sy(SAT_Y);
+  const rx = w * 0.86;
+  const ry = Math.max(h * 0.2, 120);
+  ctx.save();
+  ctx.globalAlpha = a;
+  ctx.strokeStyle = "rgba(60,100,85,0.85)";
+  ctx.lineWidth = 1;
+  ctx.setLineDash([2, 9]);
+  ctx.beginPath();
+  ctx.ellipse(cx - w * 0.1, y + ry * 0.72, rx, ry, -0.13, Math.PI * 1.04, Math.PI * 1.96);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = "rgba(159,176,166,0.85)";
+  for (const f of [-0.52, 0.44]) {
+    const px = cx - w * 0.1 + Math.cos(Math.PI * (1.5 + f * 0.46)) * rx;
+    const py = y + ry * 0.72 + Math.sin(Math.PI * (1.5 + f * 0.46)) * ry;
+    ctx.beginPath();
+    ctx.arc(px, py, 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawEarth(
+  ctx: CanvasRenderingContext2D, w: number, h: number, cam: number, cx: number,
+) {
+  const a = (1 - ramp(cam, 0.75, 1.8)) * 0.95;
+  if (a <= 0.02) return;
+  const r = Math.max(w, h) * 2.1;
+  const top = h * 0.6 + cam * h * 0.5;
   ctx.save();
   ctx.globalAlpha = a;
   const g = ctx.createLinearGradient(0, top - 2, 0, top + h * 0.7);
@@ -144,28 +173,27 @@ function drawEarth(
 /* --- the signal: one unbroken red line from orbit to the wall ---------- */
 function drawBeam(
   ctx: CanvasRenderingContext2D, w: number, h: number, cam: number, t: number,
-  sy: (y: number, p?: number) => number, cx: number, still: boolean,
-  worldScale: number,
+  sy: (y: number) => number, cx: number, still: boolean,
 ) {
-  const satY = sy(-0.13, 1);
-  const dishY = sy(2.62, 1);
+  const satY = sy(SAT_Y);
+  const dishY = sy(DISH_Y);
   const satX = cx + w * 0.19;
   const dishX = cx + w * 0.03;
 
-  const satA = 1 - ramp(cam, 1.9, 2.9) * 0.85;
+  const satA = 1 - ramp(cam, 1.5, 2.4) * 0.85;
   if (satA > 0.02 && satY > -140 && satY < h + 140) {
     ctx.save();
     ctx.globalAlpha = satA;
-    const glow = ctx.createRadialGradient(satX, satY, 0, satX, satY, 96 * worldScale);
+    const glow = ctx.createRadialGradient(satX, satY, 0, satX, satY, 96);
     glow.addColorStop(0, "rgba(210,59,44,0.5)");
     glow.addColorStop(1, "rgba(210,59,44,0)");
     ctx.fillStyle = glow;
     ctx.beginPath();
-    ctx.arc(satX, satY, 96 * worldScale, 0, Math.PI * 2);
+    ctx.arc(satX, satY, 96, 0, Math.PI * 2);
     ctx.fill();
     ctx.strokeStyle = BONE;
     ctx.lineWidth = 1.6;
-    const s = 26 * worldScale;
+    const s = 26;
     ctx.beginPath();
     ctx.rect(satX - s * 0.36, satY - s * 0.24, s * 0.72, s * 0.48);
     ctx.moveTo(satX - s * 1.5, satY - s * 0.13);
@@ -175,12 +203,12 @@ function drawBeam(
     ctx.stroke();
     ctx.fillStyle = SIGNAL;
     ctx.beginPath();
-    ctx.arc(satX, satY, 3.4 * worldScale, 0, Math.PI * 2);
+    ctx.arc(satX, satY, 3.4, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
   }
 
-  const lock = ramp(cam, 0.55, 2.35);
+  const lock = ramp(cam, 0.45, 1.85);
   const spread = (1 - lock) * w * 0.3 + w * 0.012;
   if (dishY > -60 && satY < h + 60) {
     ctx.save();
@@ -216,19 +244,19 @@ function drawBeam(
   }
 }
 
-/* altitude ticks: the instrument register, band 1 only */
+/* altitude ticks: the instrument register, second band only */
 function drawTicks(
   ctx: CanvasRenderingContext2D, w: number, cam: number,
-  sy: (y: number, p?: number) => number, cx: number, compact: boolean,
+  sy: (y: number) => number, cx: number, compact: boolean,
 ) {
   if (compact) return;
-  const a = ramp(cam, 0.62, 1.1) * (1 - ramp(cam, 1.85, 2.5));
+  const a = ramp(cam, 0.5, 0.95) * (1 - ramp(cam, 1.45, 2));
   if (a <= 0.02) return;
   const rows: Array<[number, string]> = [
-    [1.02, "550 KM UP"],
-    [1.3, "NO TREES IN THE WAY"],
-    [1.58, "29 MS BACK"],
-    [1.86, "AIMED AND SEALED"],
+    [0.85, "550 KM UP"],
+    [1.05, "NO TREES IN THE WAY"],
+    [1.25, "29 MS BACK"],
+    [1.45, "AIMED AND SEALED"],
   ];
   ctx.save();
   ctx.globalAlpha = a;
@@ -237,7 +265,7 @@ function drawTicks(
   ctx.textAlign = "left";
   const x = cx - w * 0.34;
   for (const [y, label] of rows) {
-    const py = sy(y, 1);
+    const py = sy(y);
     ctx.strokeStyle = HAIR;
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -253,11 +281,11 @@ function drawTicks(
 /* --- band 2: the roofline the dish actually lands on ------------------- */
 function drawRoof(
   ctx: CanvasRenderingContext2D, w: number, h: number, cam: number,
-  sy: (y: number, p?: number) => number, cx: number,
+  sy: (y: number) => number, cx: number,
 ) {
-  const a = ramp(cam, 1.45, 2.2) * (1 - ramp(cam, 3.15, 3.9));
+  const a = ramp(cam, 1.2, 1.85) * (1 - ramp(cam, 2.5, 2.95));
   if (a <= 0.02) return;
-  const base = sy(2.86, 1);
+  const base = sy(ROOF_Y);
   const span = w * 0.62;
   const ridgeX = cx + w * 0.03;
   const ridgeY = base - h * 0.15;
@@ -279,7 +307,7 @@ function drawRoof(
     ctx.lineTo(ridgeX - span * 0.52 * (1 - f) + span * 0.1, base);
     ctx.stroke();
   }
-  const dishY = sy(2.62, 1);
+  const dishY = sy(DISH_Y);
   ctx.strokeStyle = BONE;
   ctx.lineWidth = 1.8;
   ctx.beginPath();
@@ -294,19 +322,19 @@ function drawRoof(
   ctx.beginPath();
   ctx.moveTo(ridgeX + 6, ridgeY);
   ctx.lineTo(ridgeX + span * 0.34, base - 6);
-  ctx.lineTo(ridgeX + span * 0.34, sy(3.3, 1));
+  ctx.lineTo(ridgeX + span * 0.34, sy(CABLE_END_Y));
   ctx.stroke();
   ctx.restore();
 }
 
-/* --- band 3: inside, room by room ------------------------------------- */
+/* --- band 3: inside, room by room, where the journey ends -------------- */
 function drawHouse(
   ctx: CanvasRenderingContext2D, w: number, h: number, cam: number, t: number,
-  sy: (y: number, p?: number) => number, cx: number, still: boolean,
+  sy: (y: number) => number, cx: number, still: boolean,
 ) {
-  const a = ramp(cam, 2.5, 3.15) * (1 - ramp(cam, 3.55, 4));
+  const a = ramp(cam, 2.15, 2.75);
   if (a <= 0.02) return;
-  const top = sy(3.36, 1);
+  const top = sy(HOUSE_Y);
   const wide = Math.min(w * (compactHouse(w) ? 0.88 : 0.72), 760);
   const tall = Math.min(h * 0.42, 340);
   const x0 = cx - wide / 2;
@@ -340,7 +368,7 @@ function drawHouse(
   nodes.forEach(([fx, fy, label], i) => {
     const nx = x0 + wide * fx;
     const ny = top + tall * fy;
-    const seq = clamp((ramp(cam, 2.62, 3.34) - i * 0.1) * 3.2);
+    const seq = clamp((ramp(cam, 2.2, 2.9) - i * 0.075) * 3.6);
     if (seq <= 0.01) return;
     const pulse = still ? 0.85 : 0.7 + 0.3 * Math.sin(t * 0.0016 + i);
     ctx.globalAlpha = a * seq;
@@ -358,90 +386,5 @@ function drawHouse(
     ctx.fillStyle = BONE_DIM;
     ctx.fillText(label, nx, ny + 21);
   });
-  ctx.restore();
-}
-
-/* --- band 4: the territory the truck can reach ------------------------- */
-function drawTerritory(
-  ctx: CanvasRenderingContext2D, w: number, h: number, cam: number, t: number,
-  cx: number, anchorY: number, still: boolean,
-) {
-  const a = ramp(cam, 3.5, 4);
-  if (a <= 0.02) return;
-  ctx.save();
-  ctx.globalAlpha = a;
-  const maxR = Math.min(w, h) * 0.44;
-  const rings: Array<[number, string]> = [
-    [0.3, "45 MIN"],
-    [0.6, "90 MIN"],
-    [1, "150 MIN"],
-  ];
-  ctx.font = "500 10px 'Geist Mono', ui-monospace, monospace";
-  ctx.textAlign = "left";
-  ctx.textBaseline = "middle";
-  for (const [f, label] of rings) {
-    const r = maxR * f;
-    ctx.strokeStyle = f === 1 ? "rgba(210,59,44,0.7)" : HAIR;
-    ctx.lineWidth = f === 1 ? 1.5 : 1;
-    ctx.setLineDash(f === 1 ? [] : [3, 6]);
-    ctx.beginPath();
-    ctx.arc(cx, anchorY, r, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = f === 1 ? "rgba(232,84,63,0.9)" : BONE_DIM;
-    ctx.fillText(label, cx + r * 0.7, anchorY - r * 0.7);
-  }
-  const ang = still ? -0.6 : t * 0.00035;
-  const sweep = ctx.createLinearGradient(
-    cx, anchorY, cx + Math.cos(ang) * maxR, anchorY + Math.sin(ang) * maxR,
-  );
-  sweep.addColorStop(0, "rgba(210,59,44,0.55)");
-  sweep.addColorStop(1, "rgba(210,59,44,0)");
-  ctx.strokeStyle = sweep;
-  ctx.lineWidth = 1.6;
-  ctx.beginPath();
-  ctx.moveTo(cx, anchorY);
-  ctx.lineTo(cx + Math.cos(ang) * maxR, anchorY + Math.sin(ang) * maxR);
-  ctx.stroke();
-  ctx.fillStyle = SIGNAL;
-  ctx.beginPath();
-  ctx.arc(cx, anchorY, 4.2, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = BONE;
-  ctx.fillText("GAINESVILLE", cx + 12, anchorY + 1);
-  ctx.restore();
-}
-
-/* the orbital track the satellite sits on. Present only in the first two
-   bands, and drawn as a hairline so it reads as structure rather than
-   decoration. */
-function drawOrbit(
-  ctx: CanvasRenderingContext2D, w: number, h: number, cam: number,
-  sy: (y: number, p?: number) => number, cx: number, worldScale: number,
-) {
-  const a = (1 - ramp(cam, 0.55, 1.7)) * 0.85;
-  if (a <= 0.02) return;
-  const y = sy(-0.13, 1);
-  const rx = w * 0.86 * worldScale;
-  const ry = Math.max(h * 0.2, 120) * worldScale;
-  ctx.save();
-  ctx.globalAlpha = a;
-  ctx.strokeStyle = "rgba(60,100,85,0.85)";
-  ctx.lineWidth = 1;
-  ctx.setLineDash([2, 9]);
-  ctx.beginPath();
-  ctx.ellipse(cx - w * 0.1, y + ry * 0.72, rx, ry, -0.13, Math.PI * 1.04, Math.PI * 1.96);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  /* two more of the constellation, further along the same track */
-  ctx.fillStyle = "rgba(159,176,166,0.85)";
-  for (const f of [-0.52, 0.44]) {
-    const px = cx - w * 0.1 + Math.cos(Math.PI * (1.5 + f * 0.46)) * rx;
-    const py = y + ry * 0.72 + Math.sin(Math.PI * (1.5 + f * 0.46)) * ry;
-    ctx.beginPath();
-    ctx.arc(px, py, 2 * worldScale, 0, Math.PI * 2);
-    ctx.fill();
-  }
   ctx.restore();
 }

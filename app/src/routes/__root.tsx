@@ -62,7 +62,7 @@ function buildHead(meta: AppMeta) {
         latitude: SITE.lat,
         longitude: SITE.lon,
       },
-      geoRadius: "225000",
+      geoRadius: "135000",
     },
     sameAs: [SITE.facebook],
     knowsAbout: [

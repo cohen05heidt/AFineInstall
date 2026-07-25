@@ -34,7 +34,7 @@ const STATE_LABEL: Record<string, string> = {
 /* Phones get a crop rather than the whole three state view. The crop box is
    measured off the real 150 minute ring, so it frames exactly the area we
    cover and nothing else. */
-function mobileCrop(d: string) {
+function bbox(d: string) {
   const nums = d.match(/-?\d+(?:\.\d+)?/g) ?? [];
   let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
   for (let i = 0; i + 1 < nums.length; i += 2) {
@@ -45,6 +45,11 @@ function mobileCrop(d: string) {
     if (y < y0) y0 = y;
     if (y > y1) y1 = y;
   }
+  return { x0, y0, x1, y1 };
+}
+
+function mobileCrop(d: string) {
+  const { x0, y0, x1, y1 } = bbox(d);
   const pad = 14;
   const w = x1 - x0 + pad * 2;
   const h = y1 - y0 + pad * 2;
@@ -60,6 +65,20 @@ export function CoverageMap() {
   const [bx, by] = data.base;
   const outer = data.rings[data.rings.length - 1];
   const crop = mobileCrop(outer.d);
+  /* the radar that used to explain these rings is gone, so the map labels
+     them itself. Radius comes off each ring's own geometry. */
+  const ringLabels = data.rings.map((r) => {
+    const b = bbox(r.d);
+    const radius = (b.x1 - b.x0) / 2;
+    const a = -0.86;
+    return {
+      minutes: r.minutes,
+      miles: r.miles,
+      last: r === outer,
+      lx: bx + Math.cos(a) * radius,
+      ly: by + Math.sin(a) * radius,
+    };
+  });
 
   return (
     <figure className="relative">
@@ -122,6 +141,29 @@ export function CoverageMap() {
             className="afi-ring"
             style={{ "--afi-ring-i": String(i) } as CSSProperties}
           />
+        ))}
+
+        {ringLabels.map((r) => (
+          <g key={`lbl-ring-${r.minutes}`}>
+            <rect
+              x={r.lx - 3}
+              y={r.ly - 15}
+              width={r.last ? 92 : 84}
+              height="20"
+              fill="#0c1e19"
+            />
+            <text
+              className="afi-map-ring"
+              x={r.lx + 3}
+              y={r.ly}
+              fill={r.last ? "#e8543f" : "#7d938a"}
+              fontSize="16"
+              fontFamily="'Geist Mono', ui-monospace, monospace"
+              letterSpacing="1"
+            >
+              {r.minutes} min
+            </text>
+          </g>
         ))}
 
         {/* the sweep, the one looping element on the page, and it sits on a

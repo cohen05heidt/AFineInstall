@@ -27,9 +27,9 @@ export function Coverage() {
         </h2>
         <p className="afi-body mt-7 text-base md:text-lg">
           Everything inside the red line is a normal service call from{" "}
-          {SITE.base}: most of north Georgia, the upstate of South Carolina, and
-          the far western corner of North Carolina. Outside it, ask anyway.
-          Bigger jobs travel further.
+          {SITE.base}: all of north Georgia, the western edge of upstate South
+          Carolina, and the far southwestern tip of North Carolina. Outside it,
+          ask anyway. Bigger jobs travel further.
         </p>
       </div>
 

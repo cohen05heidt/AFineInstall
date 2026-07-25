@@ -9,14 +9,14 @@ export const SITE = {
   phone: "770-845-2453",
   phoneHref: "tel:+17708452453",
   phoneE164: "+1-770-845-2453",
-  email: "stewtanner@yahoo.com",
-  emailHref: "mailto:stewtanner@yahoo.com",
+  email: "Afineinstall@gmail.com",
+  emailHref: "mailto:Afineinstall@gmail.com",
   facebook: "https://www.facebook.com/profile.php?id=61565698050427",
   base: "Gainesville, Georgia",
   lat: 34.2979,
   lon: -83.8241,
-  driveHours: 2.5,
-  driveMiles: 140,
+  driveHours: 1.5,
+  driveMiles: 84,
 } as const;
 
 /* Measured on a customer install, Starlink standard kit. Real figures from a

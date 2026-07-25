@@ -5,7 +5,11 @@ import { PhoneSlab, QuoteInline } from "../cta";
 
 /* The camera journey. One canvas world, one scroll derived camera value.
    Everything that touches the browser lives inside the effect, so the whole
-   stage renders on the server as plain readable chapters. */
+   stage renders on the server as plain readable chapters.
+
+   Four chapters, ending inside the house. The drive radius is not told here
+   any more: the coverage section does it properly with projected geometry, and
+   saying it twice made the page repeat itself. */
 
 type Chapter = {
   id: string;
@@ -38,12 +42,6 @@ const CHAPTERS: Chapter[] = [
     heading: "Then the signal goes everywhere.",
     line: "One network name across the whole house and yard. Sound in the ceilings, the TV on the wall, cameras on the corners, alarms that reach your phone.",
     tags: ["Mesh and wired backhaul", "Zoned audio", "Recorded video"],
-  },
-  {
-    id: "territory",
-    heading: "Two and a half hours, any direction.",
-    line: "Based in Gainesville, Georgia. That reaches most of north Georgia, upstate South Carolina and the far western corner of North Carolina.",
-    tags: ["Georgia", "South Carolina", "North Carolina"],
   },
 ];
 

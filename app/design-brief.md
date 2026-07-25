@@ -17,7 +17,7 @@ Lenis plus GSAP bridge for surrounding motion.
 ## Animation mode
 Animation mode: animated-website
 
-### Journey (5 chapters, coded rather than generated)
+### Journey (4 chapters, coded rather than generated)
 1. **Orbit** - starfield, earth limb, constellation arcs. Focal point: one
    satellite crossing. Headline: from orbit to your wall plate.
 2. **Lock** - the beam narrows and locks. Focal point: beam cone tip.
@@ -26,8 +26,10 @@ Animation mode: animated-website
    sealed entry. Focal point: the dish mast.
 4. **Inside** - house cutaway, signal spreading room to room, WiFi, sound, TV
    and camera nodes lighting in sequence. Focal point: the living room node.
-5. **Territory** - camera pulls back until the house is one dot inside a two
-   and a half hour driving radius. Focal point: Gainesville.
+(A fifth Territory band originally pulled back to a radar of the drive radius.
+It was cut: the coverage section already tells that story with real projected
+geometry, and the page was saying it twice. The journey now ends inside the
+house and hands off.)
 
 ### Camera architecture
 Architecture A, continuous forward flight. One persistent canvas world holds
@@ -109,7 +111,8 @@ No two adjacent sections share a family.
 - Icon set: 8 glyphs, one 1.6px stroke language, hand authored as a single
   React sprite, used across services and process
 - Map: real projected geometry for Georgia, South Carolina, North Carolina
-  from us-atlas, drive time rings generated with d3-geo
+  from us-atlas, drive time rings generated with d3-geo at 30, 60 and 90
+  minutes (28, 56 and 84 miles at 56 mph), labelled on the ring itself
 - Section plates: procedural spruce field gradients plus a hairline grid
 - Photography: 10 curated client install photos, WebP, captioned
 - Head kit: favicon.svg, favicon 32 and 16, apple touch 180, icon 192 and 512

@@ -3,12 +3,13 @@
 Marketing site for **A Fine Install**, a low voltage installer based in
 Gainesville, Georgia. Starlink sales and installs, whole home WiFi, whole home
 sound, TV mounting, camera systems, wireless alarms, outdoor property WiFi and
-new construction prewire, across a 2.5 hour radius covering north Georgia,
-upstate South Carolina and western North Carolina.
+new construction prewire, across a 1.5 hour drive radius covering north Georgia,
+the western edge of upstate South Carolina and the far southwestern tip of
+North Carolina.
 
 **Live:** https://afineinstall.higgsfield.app
 
-Owner: Stewart Tanner  ·  770-845-2453  ·  stewtanner@yahoo.com
+Owner: Stewart Tanner  ·  770-845-2453  ·  Afineinstall@gmail.com
 
 ---
 
@@ -16,7 +17,7 @@ Owner: Stewart Tanner  ·  770-845-2453  ·  stewtanner@yahoo.com
 
 ### The scroll journey (`app/src/components/journey/`)
 
-The hero is not an image or a video. It is one canvas world five viewports
+The hero is not an image or a video. It is one canvas world four viewports
 deep, and the visitor's scroll drives a single camera value down it. Because
 there is exactly one camera number, position and velocity stay continuous
 across every scene boundary and scrolling back up is the same function run
@@ -28,7 +29,10 @@ backwards.
 | 1 | Lock | The beam cone narrows from wide to locked through altitude ticks |
 | 2 | Rooftop | A roofline with seams, the dish on the ridge, cable to a sealed entry |
 | 3 | Inside | House cutaway, six service nodes lighting in sequence |
-| 4 | Territory | The camera pulls back until the house is one dot inside the drive radius |
+
+The drive radius was originally a fifth band drawn as a radar. It is now told
+properly by the projected map in the coverage section, so the journey ends
+inside the house and hands off instead of saying the same thing twice.
 
 - `world.ts` is pure drawing. No React, no browser globals at module scope, so
   it imports safely into a server rendered route.
@@ -39,20 +43,23 @@ backwards.
 - The loop pauses via `IntersectionObserver` when the stage leaves the screen.
 - Resize only relayouts when the width or orientation actually changed, so the
   iOS url bar hiding does not trigger a rebuild.
-- `prefers-reduced-motion` paints a single composed still frame at camera 2.42
+- `prefers-reduced-motion` paints a single composed still frame at camera 2.05
   and never starts the loop.
 
 ### The coverage map (`app/src/components/map/`)
 
 Real geometry, not a drawing. `tools/genmap.mjs` takes census state shapes from
 `us-atlas`, projects Georgia, South Carolina and North Carolina with
-`d3-geo`, and generates true great circle rings at 42, 84 and 140 miles
-(45, 90 and 150 minutes at 56 mph) around 34.2979 N, 83.8241 W. Output lands in
+`d3-geo`, and generates true great circle rings at 28, 56 and 84 miles
+(30, 60 and 90 minutes at 56 mph) around 34.2979 N, 83.8241 W. Output lands in
 `app/src/lib/data/coverage-geo.json` and is read at build time.
 
-Drive times per city are computed from real great circle distance, which is why
-Columbia and Charlotte correctly fall outside the line while Chattanooga,
-Asheville and Augusta fall inside.
+Drive times per city are computed from real great circle distance, so the map
+tells the truth rather than the marketing version. At 84 miles that means
+Greenville, Asheville, Chattanooga, Augusta and Macon all fall outside the line
+and render dimmed, while Anderson, Clemson, Franklin and Murphy fall inside.
+Changing `MPH` or the ring minutes in `tools/genmap.mjs` reclassifies every city
+automatically.
 
 To regenerate after changing the base point or the radius:
 
@@ -78,6 +85,9 @@ speed test screenshot.
 validates with Zod and writes to this site's own Cloudflare D1 database. The
 table is defined in `app/migrations/0001_quote_requests.sql` and also created on
 first use so a fresh deploy cannot drop a customer's message.
+
+Services arrive as a list rather than a single choice, since one job is often
+several installs, and are stored comma joined in the `service` column.
 
 ---
 

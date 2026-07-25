@@ -271,4 +271,5 @@
   .afi-map-min { font-size: 21px; }
   .afi-map-state { display: none; }
   .afi-map-far { display: none; }
+  .afi-map-ring { font-size: 25px; }
 }
