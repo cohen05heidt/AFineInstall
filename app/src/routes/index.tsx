@@ -1,28 +1,38 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { Nav } from "../components/Nav";
+import { JourneyStage } from "../components/journey/JourneyStage";
+import { Starlink } from "../components/sections/Starlink";
+import { Services } from "../components/sections/Services";
+import { Coverage } from "../components/sections/Coverage";
+import { Gallery } from "../components/sections/Gallery";
+import { Process } from "../components/sections/Process";
+import { Contact } from "../components/sections/Contact";
+import { Footer } from "../components/Footer";
+
 export const Route = createFileRoute("/")({
-  // No title/description here on purpose: the home page inherits the app's
-  // editable page metadata from the root route (set via the marketplace meta
-  // API — title/favicon/og), so a shared link to "/" shows the owner's values.
-  // Add a `head` here only to give a SPECIFIC page its own title/description
-  // (a deeper route's head overrides the root's for that page).
   component: Index,
 });
 
-// Replace this placeholder. Routes are server-rendered — keep render SSR-safe
-// (no window/document at module top level or during render). See ./README.md.
+/* One page, eight sections, each on its own layout family:
+   journey (canvas chapters) - starlink (asymmetric split + metrics strip) -
+   services (hairline editorial list) - coverage (map canvas + side rail) -
+   work (diagonal masonry) - process (vertical rhythm line) -
+   quote (colour blocked diptych) - footer. */
 function Index() {
   return (
-    <div
-      data-higgsfield-blank-page-placeholder="REMOVE_THIS"
-      className="flex min-h-screen flex-col items-center justify-center gap-3 px-6 text-center"
-    >
-      <h1 className="text-2xl font-semibold tracking-tight">
-        Your website will live here.
-      </h1>
-      <p className="text-base text-gray-500">
-        Ask Higgsfield Supercomputer to build it.
-      </p>
-    </div>
+    <>
+      <Nav />
+      <main>
+        <JourneyStage />
+        <Starlink />
+        <Services />
+        <Coverage />
+        <Gallery />
+        <Process />
+        <Contact />
+      </main>
+      <Footer />
+    </>
   );
 }

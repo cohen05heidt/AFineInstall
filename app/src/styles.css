@@ -216,3 +216,32 @@
     clip-path: none !important;
   }
 }
+
+/* map motion: rings draw once on load, the radar sweep is the only loop and
+   it sits on an instrument, so the loop is motivated rather than decorative */
+@keyframes afi-ring-in {
+  from { transform: scale(0.82); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes afi-sweep-spin { to { transform: rotate(360deg); } }
+@keyframes afi-ping-out {
+  0% { transform: scale(0.55); opacity: 0.9; }
+  70% { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+.afi-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: afi-ring-in 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--afi-ring-i) * 170ms + 120ms);
+}
+.afi-sweep { animation: afi-sweep-spin 9s linear infinite; }
+.afi-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: afi-ping-out 3.4s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .afi-ring, .afi-sweep, .afi-ping { animation: none !important; opacity: 1; }
+  .afi-sweep { opacity: 0.35; }
+}
