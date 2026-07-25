@@ -79,6 +79,11 @@ card are all hand drawn SVG or composed locally. The only photographs are the
 client's own ten install photos in `app/public/assets/gallery/` and one Starlink
 speed test screenshot.
 
+The gallery is grouped by trade rather than shuffled: Starlink first, then TV
+mounting, then cameras. Filenames match the grouping, so adding a photo means
+dropping it in `app/public/assets/gallery/` and adding one entry to the right
+group in `Gallery.tsx`.
+
 ### Quote form
 
 `app/src/lib/api/quote.functions.ts` is a TanStack server function that

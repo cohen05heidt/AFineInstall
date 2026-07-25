@@ -89,7 +89,7 @@ a prefers-reduced-motion fallback.
 - Typography character: expressive display over refined body
 - Hero architecture: massive canvas first, restrained bottom left text
 - Section system: poster stacked storytelling
-- Signature components: vertical rhythm lines, diagonal staggered masonry,
+- Signature components: vertical rhythm lines, grouped gallery blocks,
   off grid editorial list, oversized metrics strip
 - Narrative spine: journey and waypoints
 - Second read moment: narrow vertical side rail note of live coordinates,
@@ -102,7 +102,7 @@ a prefers-reduced-motion fallback.
    next thing a visitor wants to know is whether we come to theirs.
 3. Starlink - asymmetric split plus oversized metrics strip
 4. Services - off grid editorial list, hairline divided, no card trio
-5. Gallery - diagonal staggered masonry
+5. Gallery - grouped grid, one block per trade, hairline headed
 6. Process - vertical rhythm line steps
 7. Contact - colour blocked diptych, form beside details
 No two adjacent sections share a family.
@@ -116,7 +116,9 @@ No two adjacent sections share a family.
   from us-atlas, drive time rings generated with d3-geo at 30, 60 and 90
   minutes (28, 56 and 84 miles at 56 mph), labelled on the ring itself
 - Section plates: procedural spruce field gradients plus a hairline grid
-- Photography: 10 curated client install photos, WebP, captioned
+- Photography: 10 curated client install photos, WebP, captioned, grouped by
+  trade (Starlink, TV mounting, cameras) so a visitor looking for one thing
+  sees all of it at once
 - Head kit: favicon.svg, favicon 32 and 16, apple touch 180, icon 192 and 512
   plus maskable, site.webmanifest, theme colour, full OG and Twitter block
 - OG card: 1200x630 composed locally from the brand tokens

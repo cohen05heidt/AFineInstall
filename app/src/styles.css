@@ -255,10 +255,8 @@
 
 /* off grid stepping: desktop only, so narrow screens keep their full measure */
 .afi-step-x { padding-left: 0; }
-.afi-step-y { margin-top: 0; }
 @media (min-width: 768px) {
   .afi-step-x { padding-left: calc(var(--afi-step, 0) * 0.9rem); }
-  .afi-step-y { margin-top: calc(var(--afi-step, 0) * 1.35rem); }
 }
 
 /* the map crops to the covered radius on phones */
