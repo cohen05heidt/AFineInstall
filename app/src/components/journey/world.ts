@@ -76,6 +76,7 @@ export function drawWorld({ ctx, w, h, cam, t, stars, compact, still }: Frame) {
     anchorY + (worldY - cam * plane) * h * worldScale;
 
   drawStars(ctx, w, h, cam, t, stars, still, worldScale);
+  drawOrbit(ctx, w, h, cam, sy, cx, worldScale);
   drawEarth(ctx, w, h, cam, worldScale, cx);
 
   ctx.save();
@@ -103,7 +104,7 @@ function drawStars(
     const py = (y - 0.5) * h;
     if (py < -30 || py > h + 30) continue;
     const twinkle = still ? 0.8 : 0.62 + 0.38 * Math.sin(t * 0.0011 + s.tw);
-    ctx.globalAlpha = fade * twinkle * (0.3 + s.plane * 0.3);
+    ctx.globalAlpha = fade * twinkle * (0.42 + s.plane * 0.3);
     ctx.fillStyle = s.plane === 2 ? BONE : BONE_DIM;
     ctx.beginPath();
     ctx.arc(s.x * w, py, s.r * worldScale, 0, Math.PI * 2);
@@ -119,7 +120,7 @@ function drawEarth(
   const a = (1 - ramp(cam, 0.9, 2.2)) * 0.95;
   if (a <= 0.02) return;
   const r = Math.max(w, h) * 2.1 * worldScale;
-  const top = h * 0.72 + cam * h * 0.42;
+  const top = h * 0.6 + cam * h * 0.42;
   ctx.save();
   ctx.globalAlpha = a;
   const g = ctx.createLinearGradient(0, top - 2, 0, top + h * 0.7);
@@ -145,7 +146,7 @@ function drawBeam(
   sy: (y: number, p?: number) => number, cx: number, still: boolean,
   worldScale: number,
 ) {
-  const satY = sy(0.06, 1);
+  const satY = sy(-0.13, 1);
   const dishY = sy(2.62, 1);
   const satX = cx + w * 0.19;
   const dishX = cx + w * 0.03;
@@ -407,5 +408,39 @@ function drawTerritory(
   ctx.fill();
   ctx.fillStyle = BONE;
   ctx.fillText("GAINESVILLE", cx + 12, anchorY + 1);
+  ctx.restore();
+}
+
+/* the orbital track the satellite sits on. Present only in the first two
+   bands, and drawn as a hairline so it reads as structure rather than
+   decoration. */
+function drawOrbit(
+  ctx: CanvasRenderingContext2D, w: number, h: number, cam: number,
+  sy: (y: number, p?: number) => number, cx: number, worldScale: number,
+) {
+  const a = (1 - ramp(cam, 0.55, 1.7)) * 0.85;
+  if (a <= 0.02) return;
+  const y = sy(-0.13, 1);
+  const rx = w * 0.86 * worldScale;
+  const ry = Math.max(h * 0.2, 120) * worldScale;
+  ctx.save();
+  ctx.globalAlpha = a;
+  ctx.strokeStyle = "rgba(60,100,85,0.85)";
+  ctx.lineWidth = 1;
+  ctx.setLineDash([2, 9]);
+  ctx.beginPath();
+  ctx.ellipse(cx - w * 0.1, y + ry * 0.72, rx, ry, -0.13, Math.PI * 1.04, Math.PI * 1.96);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  /* two more of the constellation, further along the same track */
+  ctx.fillStyle = "rgba(159,176,166,0.85)";
+  for (const f of [-0.52, 0.44]) {
+    const px = cx - w * 0.1 + Math.cos(Math.PI * (1.5 + f * 0.46)) * rx;
+    const py = y + ry * 0.72 + Math.sin(Math.PI * (1.5 + f * 0.46)) * ry;
+    ctx.beginPath();
+    ctx.arc(px, py, 2 * worldScale, 0, Math.PI * 2);
+    ctx.fill();
+  }
   ctx.restore();
 }

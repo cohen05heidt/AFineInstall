@@ -77,7 +77,7 @@ export function JourneyStage() {
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       compact = w < 900;
-      stars = makeStars(compact ? 90 : 210);
+      stars = makeStars(compact ? 130 : 300);
     };
 
     const readScroll = () => {
@@ -181,21 +181,21 @@ export function JourneyStage() {
             <section
               key={c.id}
               aria-labelledby="hero-heading"
-              className="flex h-dvh flex-col justify-end px-6 pb-20 md:px-12 md:pb-24"
+              className="flex h-[82dvh] flex-col justify-end px-6 pb-10 pt-24 md:h-[84dvh] md:px-12 md:pb-14"
             >
               <p className="afi-eyebrow">{SITE.base}</p>
               <h1
                 id="hero-heading"
-                className="afi-display mt-6 max-w-[15ch] text-5xl sm:text-6xl md:text-7xl"
+                className="afi-display mt-4 max-w-[15ch] text-5xl sm:text-6xl md:text-7xl"
               >
                 From orbit to your{" "}
                 <span className="text-[var(--afi-signal)]">wall plate</span>.
               </h1>
-              <p className="afi-body mt-6 text-base md:text-lg">
+              <p className="afi-body mt-5 text-base md:text-lg">
                 Starlink sales and installs, whole home WiFi, sound, TV and camera
                 systems across North Georgia.
               </p>
-              <div className="mt-9 flex flex-wrap items-center gap-x-10 gap-y-6">
+              <div className="mt-7 flex flex-wrap items-center gap-x-10 gap-y-6">
                 <PhoneSlab />
                 <QuoteInline />
               </div>

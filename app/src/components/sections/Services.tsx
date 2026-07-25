@@ -72,9 +72,13 @@ export function Services() {
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="afi-field afi-field-fade relative border-t border-[var(--afi-hair-soft)] px-6 py-24 md:px-12 md:py-32"
+      className="relative overflow-hidden border-t border-[var(--afi-hair-soft)] px-6 py-24 md:px-12 md:py-32"
     >
-      <div className="mx-auto max-w-[1400px]">
+      <span
+        aria-hidden="true"
+        className="afi-field afi-field-fade pointer-events-none absolute inset-0"
+      />
+      <div className="relative mx-auto max-w-[1400px]">
         <h2
           id="services-heading"
           className="afi-display max-w-[24ch] text-4xl sm:text-5xl md:text-[3.4rem]"
