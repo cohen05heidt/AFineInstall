@@ -4,7 +4,7 @@ import { SITE } from "../../lib/site";
 
 /* Real geometry. State outlines come from the US census shapes in us-atlas,
    projected at build time, and the rings are true great circle radii around
-   the shop, so the 2.5 hour line is drawn rather than guessed. */
+   the shop, so the 1.5 hour line is drawn rather than guessed. */
 
 type City = {
   name: string;
@@ -86,7 +86,9 @@ export function CoverageMap() {
         viewBox={data.viewBox}
         className="w-full"
         role="img"
-        aria-label={`Service area map. ${SITE.base} at the centre, with drive time rings at 45, 90 and 150 minutes reaching across Georgia, upstate South Carolina and western North Carolina.`}
+        aria-label={`Service area map. ${SITE.base} at the centre, with drive time rings at ${data.rings
+          .map((r) => r.minutes)
+          .join(", ")} minutes. The outer ring is ${SITE.driveHours} hours of driving, or ${SITE.driveMiles} miles, and it reaches all of north Georgia, the western edge of upstate South Carolina and the far southwestern tip of North Carolina.`}
       >
         <defs>
           <clipPath id="afi-inside">
@@ -122,7 +124,7 @@ export function CoverageMap() {
         ))}
 
         {/* the covered wedge: the same three states, brightened only where the
-            2.5 hour ring actually reaches */}
+            1.5 hour ring actually reaches */}
         <g clipPath="url(#afi-inside)">
           {data.states.map((s) => (
             <path key={`in-${s.code}`} d={s.d} fill="#1d4034" />
