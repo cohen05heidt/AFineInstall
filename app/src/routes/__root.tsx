@@ -108,15 +108,25 @@ function buildHead(meta: AppMeta) {
       {
         rel: "preconnect",
         href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous",
+        crossOrigin: "anonymous" as const,
       },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap",
       },
       { rel: "icon", href: "/assets/brand/favicon.svg", type: "image/svg+xml" },
-      { rel: "icon", href: "/assets/brand/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { rel: "icon", href: "/assets/brand/favicon-16.png", sizes: "16x16", type: "image/png" },
+      {
+        rel: "icon",
+        href: "/assets/brand/favicon-32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        rel: "icon",
+        href: "/assets/brand/favicon-16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
       { rel: "apple-touch-icon", href: "/assets/brand/apple-touch-icon.png", sizes: "180x180" },
       { rel: "manifest", href: "/site.webmanifest" },
       { rel: "canonical", href: SITE.origin },
