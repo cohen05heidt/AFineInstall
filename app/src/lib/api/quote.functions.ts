@@ -24,7 +24,8 @@ const QuoteInput = z.object({
   phone: z.string().trim().min(7).max(40),
   email: z.string().trim().max(160).optional().or(z.literal("")),
   town: z.string().trim().max(120).optional().or(z.literal("")),
-  service: z.string().trim().min(2).max(80),
+  /* a job is often more than one thing, so this arrives as a list */
+  service: z.array(z.string().trim().min(2).max(80)).min(1).max(12),
   message: z.string().trim().max(2000).optional().or(z.literal("")),
 });
 
@@ -59,7 +60,7 @@ export const submitQuote = createServerFn({ method: "POST" })
         data.phone,
         data.email || null,
         data.town || null,
-        data.service,
+        data.service.join(", "),
         data.message || null,
       )
       .run();

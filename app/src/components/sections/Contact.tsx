@@ -15,6 +15,14 @@ export function Contact() {
   const [pending, setPending] = useState(false);
   const [done, setDone] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
+  const [picked, setPicked] = useState<string[]>([]);
+
+  const toggle = (option: string) =>
+    setPicked((prev) =>
+      prev.includes(option)
+        ? prev.filter((o) => o !== option)
+        : [...prev, option],
+    );
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -25,7 +33,7 @@ export function Contact() {
       phone: String(fd.get("phone") ?? "").trim(),
       email: String(fd.get("email") ?? "").trim(),
       town: String(fd.get("town") ?? "").trim(),
-      service: String(fd.get("service") ?? "").trim(),
+      service: picked,
       message: String(fd.get("message") ?? "").trim(),
     };
 
@@ -33,7 +41,8 @@ export function Contact() {
     if (values.name.length < 2) next.name = "Please give us a name to ask for.";
     if (values.phone.replace(/\D/g, "").length < 7)
       next.phone = "A phone number we can actually reach you on.";
-    if (!values.service) next.service = "Pick the closest match.";
+    if (values.service.length === 0)
+      next.service = "Pick at least one. More than one is fine.";
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
@@ -43,6 +52,7 @@ export function Contact() {
       if (res.ok) {
         setDone(true);
         form.reset();
+        setPicked([]);
       } else {
         setErrors({
           form: `We could not save that. Please call ${SITE.phone} instead.`,
@@ -201,32 +211,80 @@ export function Contact() {
               </div>
             </div>
 
-            <div>
-              <label htmlFor="q-service" className={labelCls}>
+            <fieldset aria-describedby={errors.service ? "q-service-err" : undefined}>
+              <legend className={labelCls}>
                 What do you need
-              </label>
-              <select
-                id="q-service"
-                name="service"
-                defaultValue=""
-                className={`${field} mt-2`}
-                aria-invalid={Boolean(errors.service)}
+                <span className="ml-2 normal-case tracking-normal text-[var(--afi-bone-faint)]">
+                  (pick as many as apply)
+                </span>
+              </legend>
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                {SERVICE_OPTIONS.map((o) => {
+                  const on = picked.includes(o);
+                  return (
+                    <label
+                      key={o}
+                      className={`flex cursor-pointer items-start gap-3 border px-3.5 py-3 transition-colors ${
+                        on
+                          ? "border-[var(--afi-signal)] bg-[color-mix(in_srgb,var(--afi-signal)_12%,transparent)]"
+                          : "border-[var(--afi-hair)] hover:border-[var(--afi-bone-faint)]"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        name="service"
+                        value={o}
+                        checked={on}
+                        onChange={() => toggle(o)}
+                        className="peer sr-only"
+                      />
+                      <span
+                        aria-hidden="true"
+                        className={`mt-[2px] flex h-[16px] w-[16px] shrink-0 items-center justify-center border transition-colors peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--afi-signal-lit)] ${
+                          on
+                            ? "border-[var(--afi-signal)] bg-[var(--afi-signal)]"
+                            : "border-[var(--afi-hair)]"
+                        }`}
+                      >
+                        <svg
+                          viewBox="0 0 12 12"
+                          className={`h-[10px] w-[10px] ${on ? "opacity-100" : "opacity-0"}`}
+                          fill="none"
+                          stroke="#fff"
+                          strokeWidth="2"
+                          strokeLinecap="square"
+                        >
+                          <path d="M2 6.2 4.6 8.8 10 3.2" />
+                        </svg>
+                      </span>
+                      <span
+                        className={`text-sm leading-snug ${
+                          on ? "text-[var(--afi-bone)]" : "text-[var(--afi-bone-dim)]"
+                        }`}
+                      >
+                        {o}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+              <p
+                className="afi-mono mt-3 text-[0.625rem] uppercase tracking-[0.16em] text-[var(--afi-bone-faint)]"
+                aria-live="polite"
               >
-                <option value="" disabled>
-                  Choose one
-                </option>
-                {SERVICE_OPTIONS.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
-                  </option>
-                ))}
-              </select>
+                {picked.length === 0
+                  ? "Nothing picked yet"
+                  : `${picked.length} selected`}
+              </p>
               {errors.service ? (
-                <p className="mt-2 text-sm text-[var(--afi-signal-lit)]">
+                <p
+                  id="q-service-err"
+                  className="mt-1 text-sm text-[var(--afi-signal-lit)]"
+                >
                   {errors.service}
                 </p>
               ) : null}
-            </div>
+            </fieldset>
 
             <div>
               <label htmlFor="q-message" className={labelCls}>
