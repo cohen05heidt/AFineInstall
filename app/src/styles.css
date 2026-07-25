@@ -275,10 +275,3 @@
   .afi-map-state { display: none; }
   .afi-map-far { display: none; }
 }
-  .afi-map-base { font-size: 40px; letter-spacing: 2.4px; }
-  .afi-map-city { font-size: 27px; }
-  .afi-map-min { font-size: 21px; }
-  .afi-map-state { display: none; }
-  .afi-map-far { display: none; }
-  .afi-map-ring { font-size: 25px; }
-}
