@@ -266,6 +266,15 @@
   .afi-map-zoom {
     transform: translate(var(--afi-mz-x), var(--afi-mz-y)) scale(var(--afi-mz-s));
   }
+  /* sizes are multiplied by the map's own scale factor so they track the
+     frame instead of being pinned to one radius */
+  .afi-map-base { font-size: calc(var(--afi-k) * 40px); letter-spacing: calc(var(--afi-k) * 2.4px); }
+  .afi-map-city { font-size: calc(var(--afi-k) * 27px); }
+  .afi-map-min { font-size: calc(var(--afi-k) * 21px); }
+  .afi-map-ring { font-size: calc(var(--afi-k) * 25px); }
+  .afi-map-state { display: none; }
+  .afi-map-far { display: none; }
+}
   .afi-map-base { font-size: 40px; letter-spacing: 2.4px; }
   .afi-map-city { font-size: 27px; }
   .afi-map-min { font-size: 21px; }

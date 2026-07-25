@@ -97,9 +97,11 @@ a prefers-reduced-motion fallback.
 
 ## Section plan (7 sections, 7 distinct layout families, 2 eyebrows of 3 allowed)
 1. Hero - full bleed canvas stage, content bottom left (eyebrow 1)
-2. Starlink - asymmetric split plus oversized metrics strip
-3. Services - off grid editorial list, hairline divided, no card trio
-4. Coverage - map as canvas plus vertical side rail (eyebrow 2)
+2. Coverage - map as canvas plus vertical side rail (eyebrow 2). Placed second,
+   right off the end of the journey: the journey ends inside one house, and the
+   next thing a visitor wants to know is whether we come to theirs.
+3. Starlink - asymmetric split plus oversized metrics strip
+4. Services - off grid editorial list, hairline divided, no card trio
 5. Gallery - diagonal staggered masonry
 6. Process - vertical rhythm line steps
 7. Contact - colour blocked diptych, form beside details

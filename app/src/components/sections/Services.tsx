@@ -72,7 +72,7 @@ export function Services() {
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="relative overflow-hidden border-t border-[var(--afi-hair-soft)] px-5 py-20 sm:px-6 md:px-12 md:py-32"
+      className="relative overflow-hidden border-t border-[var(--afi-hair-soft)] bg-[var(--afi-ground)] px-5 py-20 sm:px-6 md:px-12 md:py-32"
     >
       <span
         aria-hidden="true"

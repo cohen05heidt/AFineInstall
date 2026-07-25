@@ -22,6 +22,8 @@ const path = geoPath(proj);
 const mi2rad = mi => (mi/3958.8)*(180/Math.PI);
 const ring = mi => geoCircle().center(BASE).radius(mi2rad(mi)).precision(0.6)();
 
+/* kinds: base | metro (dot + name + drive time) | town (dot + name)
+   | minor (dot only, no label: too close to the shop to be worth the ink) */
 const cities=[
  ['Gainesville',-83.8241,34.2979,'base'],
  ['Atlanta',-84.3880,33.7490,'metro'],   ['Athens',-83.3576,33.9519,'metro'],
@@ -30,17 +32,17 @@ const cities=[
  ['Augusta',-82.0105,33.4735,'metro'],   ['Macon',-83.6324,32.8407,'metro'],
  ['Spartanburg',-81.9320,34.9496,'metro'],
  ['Columbia',-81.0348,34.0007,'metro'],  ['Charlotte',-80.8431,35.2271,'metro'],
- ['Dahlonega',-83.9849,34.5323,'town'],  ['Cumming',-84.1402,34.2073,'town'],
- ['Buford',-84.0044,34.1207,'town'],     ['Winder',-83.7202,33.9926,'town'],
- ['Commerce',-83.4571,34.2043,'town'],   ['Toccoa',-83.3324,34.5773,'town'],
- ['Helen',-83.7274,34.7015,'town'],      ['Cleveland',-83.7624,34.5968,'town'],
- ['Clarkesville',-83.5254,34.6132,'town'],['Dawsonville',-84.1191,34.4215,'town'],
+ ['Dahlonega',-83.9849,34.5323,'town'],  ['Cumming',-84.1402,34.2073,'minor'],
+ ['Buford',-84.0044,34.1207,'minor'],     ['Winder',-83.7202,33.9926,'minor'],
+ ['Commerce',-83.4571,34.2043,'minor'],   ['Toccoa',-83.3324,34.5773,'town'],
+ ['Helen',-83.7274,34.7015,'town'],      ['Cleveland',-83.7624,34.5968,'minor'],
+ ['Clarkesville',-83.5254,34.6132,'minor'],['Dawsonville',-84.1191,34.4215,'minor'],
  ['Canton',-84.4908,34.2368,'town'],     ['Clayton',-83.4013,34.8781,'town'],
  ['Hiawassee',-83.7574,34.9490,'town'],  ['Blue Ridge',-84.3241,34.8637,'town'],
- ['Ellijay',-84.4821,34.6948,'town'],    ['Jasper',-84.4291,34.4681,'town'],
+ ['Ellijay',-84.4821,34.6948,'town'],    ['Jasper',-84.4291,34.4681,'minor'],
  ['Rome',-85.1647,34.2570,'town'],       ['Marietta',-84.5499,33.9526,'town'],
- ['Alpharetta',-84.2941,34.0754,'town'], ['Lawrenceville',-83.9880,33.9562,'town'],
- ['Westminster',-83.0932,34.6640,'town'],['Walhalla',-83.0640,34.7654,'town'],
+ ['Alpharetta',-84.2941,34.0754,'minor'], ['Lawrenceville',-83.9880,33.9562,'minor'],
+ ['Westminster',-83.0932,34.6640,'minor'],['Walhalla',-83.0640,34.7654,'town'],
  ['Seneca',-82.9534,34.6887,'town'],     ['Clemson',-82.8374,34.6834,'town'],
  ['Franklin',-83.3813,35.1821,'town'],   ['Highlands',-83.1968,35.0526,'town'],
  ['Murphy',-84.0345,35.0873,'town'],     ['Hayesville',-83.8177,35.0437,'town'],

@@ -3,9 +3,9 @@ import { SITE } from "../lib/site";
 import { Monogram, Wordmark } from "./Brand";
 
 const LINKS = [
+  { href: "#coverage", label: "Coverage" },
   { href: "#starlink", label: "Starlink" },
   { href: "#services", label: "Services" },
-  { href: "#coverage", label: "Coverage" },
   { href: "#work", label: "Work" },
   { href: "#quote", label: "Contact" },
 ];

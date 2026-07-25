@@ -15,7 +15,7 @@ export function Starlink() {
     <section
       id="starlink"
       aria-labelledby="starlink-heading"
-      className="relative border-t border-[var(--afi-hair-soft)] bg-[var(--afi-ground)] px-5 py-20 sm:px-6 md:px-12 md:py-32"
+      className="relative border-t border-[var(--afi-hair-soft)] px-5 py-20 sm:px-6 md:px-12 md:py-32"
     >
       <div className="mx-auto grid max-w-[1400px] gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-7">
