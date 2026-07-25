@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { ComponentType, CSSProperties } from "react";
 import {
   IconAlarm, IconCamera, IconDish, IconGate, IconMesh, IconPrewire,
   IconScreen, IconSpeaker,
@@ -89,12 +89,14 @@ export function Services() {
                 href="#quote"
                 data-shown={shown}
                 className="afi-rise group flex items-start gap-5 py-7 md:gap-10 md:py-9"
-                style={{
-                  ["--afi-rise-delay" as string]: `${i * 55}ms`,
-                  ["--afi-rise-y" as string]: "14px",
-                  /* off grid: each row steps a little further in */
-                  paddingLeft: `calc(${i % 4} * 0.9rem)`,
-                }}
+                style={
+                  {
+                    "--afi-rise-delay": `${i * 55}ms`,
+                    "--afi-rise-y": "14px",
+                    /* off grid: each row steps a little further in */
+                    paddingLeft: `calc(${i % 4} * 0.9rem)`,
+                  } as CSSProperties
+                }
               >
                 <s.Icon className="mt-1 h-7 w-7 shrink-0 text-[var(--afi-signal)] transition-transform duration-500 group-hover:scale-110 md:h-9 md:w-9 motion-reduce:transition-none" />
                 <div className="min-w-0 flex-1 md:grid md:grid-cols-12 md:gap-10">

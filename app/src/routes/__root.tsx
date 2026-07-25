@@ -12,7 +12,6 @@ import appCss from "../styles.css?url";
 import { reportHiggsfieldError } from "../lib/higgsfield-error-reporting";
 import appMetaJson from "../app-meta.json";
 import { SITE } from "../lib/site";
-import { Wordmark } from "../components/Brand";
 
 declare const __HF_DESIGN_INSPECTOR__: boolean;
 
@@ -251,5 +250,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-
-export { Wordmark };

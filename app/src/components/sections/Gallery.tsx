@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { useReveal } from "../../hooks/useReveal";
 
 /* Diagonal staggered masonry. Ten photographs from finished jobs, each one
@@ -89,12 +90,14 @@ export function Gallery() {
               key={s.file}
               data-shown={shown}
               className={`afi-rise group ${s.span ? "col-span-2 md:col-span-1" : ""}`}
-              style={{
-                ["--afi-rise-delay" as string]: `${i * 70}ms`,
-                ["--afi-rise-y" as string]: "26px",
-                /* the diagonal: every column sits a step lower */
-                marginTop: `calc(${i % 4} * 1.35rem)`,
-              }}
+              style={
+                {
+                  "--afi-rise-delay": `${i * 70}ms`,
+                  "--afi-rise-y": "26px",
+                  /* the diagonal: every column sits a step lower */
+                  marginTop: `calc(${i % 4} * 1.35rem)`,
+                } as CSSProperties
+              }
             >
               <figure>
                 <div className="overflow-hidden border border-[var(--afi-hair-soft)] bg-[var(--afi-ground)]">

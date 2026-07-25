@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { FormEvent } from "react";
 import { SITE } from "../../lib/site";
 import { FormSlab, FacebookMark } from "../cta";
 import { SERVICE_OPTIONS, submitQuote } from "../../lib/api/quote.functions";
@@ -15,7 +16,7 @@ export function Contact() {
   const [done, setDone] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const fd = new FormData(form);

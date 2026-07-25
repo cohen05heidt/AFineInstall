@@ -1,6 +1,8 @@
 /* Brand marks and the site icon set. Every glyph here shares one language:
    1.6 stroke, square cap, 24 box, no fill. Drawn once, used in services,
    process and the map legend, so the page never mixes two icon families. */
+import type { ReactNode } from "react";
+
 type IconProps = { className?: string };
 
 const S = {
@@ -11,7 +13,7 @@ const S = {
   strokeLinejoin: "miter",
 } as const;
 
-function Box({ className, children }: IconProps & { children: React.ReactNode }) {
+function Box({ className, children }: IconProps & { children: ReactNode }) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true" {...S}>
       {children}

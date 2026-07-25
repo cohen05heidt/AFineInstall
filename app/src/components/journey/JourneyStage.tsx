@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { BANDS, TRAVEL, STILL_CAM, drawWorld, makeStars, type Star } from "./world";
+import { TRAVEL, STILL_CAM, drawWorld, makeStars, type Star } from "./world";
 import { SITE } from "../../lib/site";
 import { PhoneSlab, QuoteInline } from "../cta";
 
@@ -169,7 +169,6 @@ export function JourneyStage() {
       ref={hostRef}
       id="top"
       className="relative"
-      style={{ height: `${BANDS * 100}dvh` }}
     >
       <div className="pointer-events-none sticky top-0 h-dvh w-full overflow-hidden">
         <canvas ref={canvasRef} className="h-full w-full" aria-hidden="true" />

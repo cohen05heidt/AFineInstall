@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { MEASURED, SITE } from "../../lib/site";
 import { QuoteInline } from "../cta";
 import { useReveal } from "../../hooks/useReveal";
@@ -68,7 +69,7 @@ export function Starlink() {
       <div
         data-shown={shown}
         className="afi-rise mx-auto mt-20 grid max-w-[1400px] grid-cols-3 border-t border-[var(--afi-signal)]"
-        style={{ ["--afi-rise-y" as string]: "22px" }}
+        style={{ "--afi-rise-y": "22px" } as CSSProperties}
       >
         {[
           [MEASURED.down, "Mbps down"],

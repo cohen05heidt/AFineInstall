@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import geo from "../../lib/data/coverage-geo.json";
 import { SITE } from "../../lib/site";
 
@@ -92,7 +93,7 @@ export function CoverageMap() {
             strokeWidth={i === data.rings.length - 1 ? 2 : 1.1}
             strokeDasharray={i === data.rings.length - 1 ? undefined : "4 7"}
             className="afi-ring"
-            style={{ ["--afi-ring-i" as string]: String(i) }}
+            style={{ "--afi-ring-i": String(i) } as CSSProperties}
           />
         ))}
 
