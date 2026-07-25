@@ -111,3 +111,108 @@
     border-color: var(--hf-color-border-default);
   }
 }
+
+/* ==========================================================================
+   A FINE INSTALL - independent brand layer
+   Locked palette: spruce ground + bone + one signal red accent.
+   Nothing below uses q-* tokens. Fonts arrive via <link> in __root.tsx.
+   ========================================================================== */
+:root {
+  --afi-ink: #071410;
+  --afi-ground: #0c1e19;
+  --afi-raised: #143028;
+  --afi-hair: #25443a;
+  --afi-hair-soft: #1a332b;
+  --afi-bone: #ede7da;
+  --afi-bone-dim: #9fb0a6;
+  --afi-bone-faint: #6c7f75;
+  --afi-signal: #d23b2c;
+  --afi-signal-lit: #e8543f;
+  --afi-signal-deep: #8e2419;
+  --afi-display: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --afi-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--afi-ink);
+    color: var(--afi-bone);
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--afi-ink);
+    color: var(--afi-bone);
+    font-family: var(--afi-display);
+    font-synthesis-weight: none;
+    overflow-x: hidden;
+  }
+  * { border-color: var(--afi-hair-soft); }
+  ::selection { background: var(--afi-signal); color: #fff; }
+  :focus-visible {
+    outline: 2px solid var(--afi-signal-lit);
+    outline-offset: 3px;
+  }
+  h1, h2, h3, h4 { font-family: var(--afi-display); font-weight: 700; }
+}
+
+@layer utilities {
+  .afi-mono {
+    font-family: var(--afi-mono);
+    font-feature-settings: "tnum" 1;
+    letter-spacing: 0.06em;
+  }
+  .afi-eyebrow {
+    font-family: var(--afi-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--afi-bone-faint);
+  }
+  .afi-display {
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+  .afi-body {
+    color: var(--afi-bone-dim);
+    line-height: 1.65;
+    max-width: 62ch;
+  }
+  /* hairline field: the one background texture, used on three sections */
+  .afi-field {
+    background-image:
+      linear-gradient(to right, var(--afi-hair-soft) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--afi-hair-soft) 1px, transparent 1px);
+    background-size: 96px 96px;
+    background-position: center top;
+  }
+  .afi-field-fade {
+    mask-image: radial-gradient(120% 80% at 50% 0%, #000 20%, transparent 78%);
+    -webkit-mask-image: radial-gradient(120% 80% at 50% 0%, #000 20%, transparent 78%);
+  }
+  /* one corner language for the whole page: sharp, with a single 2px softening */
+  .afi-sharp { border-radius: 2px; }
+  .afi-rise {
+    opacity: 1;
+    transform: translate3d(0, var(--afi-rise-y, 18px), 0);
+    transition:
+      transform 900ms cubic-bezier(0.16, 1, 0.3, 1) var(--afi-rise-delay, 0ms);
+    will-change: transform;
+  }
+  .afi-rise[data-shown="true"] { transform: translate3d(0, 0, 0); }
+  .afi-clip {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1100ms cubic-bezier(0.16, 1, 0.3, 1) var(--afi-rise-delay, 0ms);
+  }
+  .afi-clip[data-shown="true"] { clip-path: inset(0 0 0 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .afi-rise, .afi-clip {
+    transition: none !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}

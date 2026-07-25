@@ -66,9 +66,20 @@ families.
 One theme: the page is dark end to end. One accent, page wide.
 
 ## Locked type
-Display `Cabinet Grotesk` (Fontshare), body `Inter Tight`, meta `JetBrains Mono`
-for coordinates, drive times and spec figures only. No serif anywhere: this is a
-trade business, not an editorial or heritage brand, so the recipe default holds.
+`Geist` for display and body, `Geist Mono` for meta (coordinates, drive times,
+spec figures, phone number). Chosen from the recipe pairings and pinned to
+Google Fonts because the worker content security policy allows only
+fonts.googleapis.com and fonts.gstatic.com, which rules out Fontshare. Display
+character comes from scale and tracking (700 weight, tracking tighter, two line
+maximum), not from a decorative face. No serif anywhere: this is a trade
+business, not an editorial or heritage brand, so the recipe default holds.
+
+## Motion dependencies
+No new packages. Lenis and GSAP are not in the scaffold and adding them would
+put the lockfile out of step with the trusted build, so the camera value, the
+smoothing and the reveals are hand written over one requestAnimationFrame loop.
+Everything animates transform and opacity only, and every animated element has
+a prefers-reduced-motion fallback.
 
 ## Combinatorial pick
 - Theme paradigm: Bold Studio Solid, deep spruce field
