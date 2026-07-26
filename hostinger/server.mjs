@@ -213,7 +213,7 @@ async function serveStatic(req, res, pathname) {
 createServer((req, res) => {
   const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
 
-  if (url.pathname === "/api/quote") {
+  if (url.pathname === "/api/quote" || url.pathname === "/api/quote.php") {
     if (req.method !== "POST") return json(res, 405, { ok: false, error: "method" });
     let body = "";
     let tooBig = false;
