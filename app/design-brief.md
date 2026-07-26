@@ -129,6 +129,8 @@ No two adjacent sections share a family.
 - `QuoteInline` (Starlink) - inline label with a rule that draws left to right
 - `ServiceHint` (services) - oversized service name, tiny arrow hint on hover
 - `CoverageBanner` (coverage) - full width red band, label centred
-- `FacebookMark` (social) - the single pill on the page, bordered, mark inside
+- `SocialRow` (social) - the one pill shape on the page, used twice for
+  Facebook and Instagram because they are a set rather than two competing
+  calls to action. Bordered, mark inside, each carrying its own magnet
 - `FormSlab` (contact) - solid signal red slab, scales to 0.98 on press
 One CTA label per intent, page wide: **Get a quote**.

@@ -1,5 +1,5 @@
 import { SITE } from "../lib/site";
-import { Monogram, IconFacebook } from "./Brand";
+import { Monogram, IconFacebook, IconInstagram } from "./Brand";
 
 export function Footer() {
   return (
@@ -28,15 +28,26 @@ export function Footer() {
           >
             {SITE.email}
           </a>
-          <a
-            href={SITE.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="A Fine Install on Facebook"
-            className="text-[var(--afi-bone-dim)] transition-colors hover:text-[var(--afi-signal-lit)]"
-          >
-            <IconFacebook className="h-6 w-6" />
-          </a>
+          <div className="flex items-center gap-5">
+            <a
+              href={SITE.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="A Fine Install on Facebook"
+              className="text-[var(--afi-bone-dim)] transition-colors hover:text-[var(--afi-signal-lit)]"
+            >
+              <IconFacebook className="h-6 w-6" />
+            </a>
+            <a
+              href={SITE.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`A Fine Install on Instagram, ${SITE.instagramHandle}`}
+              className="text-[var(--afi-bone-dim)] transition-colors hover:text-[var(--afi-signal-lit)]"
+            >
+              <IconInstagram className="h-6 w-6" />
+            </a>
+          </div>
         </div>
       </div>
 

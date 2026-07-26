@@ -64,7 +64,7 @@ function buildHead(meta: AppMeta) {
       },
       geoRadius: "135000",
     },
-    sameAs: [SITE.facebook],
+    sameAs: [SITE.facebook, SITE.instagram],
     knowsAbout: [
       "Starlink installation",
       "Starlink sales",

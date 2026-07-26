@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { SITE } from "../../lib/site";
-import { FormSlab, FacebookMark } from "../cta";
+import { FormSlab, SocialRow } from "../cta";
 import { SERVICE_OPTIONS, submitQuote } from "../../lib/api/quote.functions";
 
 type Errors = Partial<Record<"name" | "phone" | "service" | "form", string>>;
@@ -118,7 +118,7 @@ export function Contact() {
           <div>
             <dt className={labelCls}>Install photos</dt>
             <dd className="mt-4">
-              <FacebookMark />
+              <SocialRow />
             </dd>
           </div>
         </dl>

@@ -1,5 +1,6 @@
+import type { ReactNode } from "react";
 import { SITE } from "../lib/site";
-import { IconFacebook } from "./Brand";
+import { IconFacebook, IconInstagram } from "./Brand";
 import { useMagnet } from "../hooks/useReveal";
 
 /* Bespoke chrome. Every call to action on this page is its own component with
@@ -57,20 +58,43 @@ export function CoverageBanner() {
   );
 }
 
-/* social: the single pill on the page, and the only magnetic element */
-export function FacebookMark() {
+/* social: the one pill shape on the page. Facebook and Instagram share it on
+   purpose, because they are a set rather than two competing calls to action,
+   and each one carries its own magnet so the pair still feels alive. */
+function SocialPill({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: ReactNode;
+}) {
   const ref = useMagnet(0.18);
   return (
     <a
       ref={ref}
-      href={SITE.facebook}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className="inline-flex items-center gap-3 rounded-full border border-[var(--afi-hair)] bg-[var(--afi-raised)] py-3 pl-4 pr-6 text-[var(--afi-bone)] transition-colors hover:border-[var(--afi-signal)] hover:text-white"
     >
-      <IconFacebook className="h-5 w-5 text-[var(--afi-signal)]" />
-      <span className="text-sm font-medium">Follow on Facebook</span>
+      {children}
+      <span className="text-sm font-medium">{label}</span>
     </a>
+  );
+}
+
+export function SocialRow() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      <SocialPill href={SITE.facebook} label="Facebook">
+        <IconFacebook className="h-5 w-5 text-[var(--afi-signal)]" />
+      </SocialPill>
+      <SocialPill href={SITE.instagram} label="Instagram">
+        <IconInstagram className="h-5 w-5 text-[var(--afi-signal)]" />
+      </SocialPill>
+    </div>
   );
 }
 

@@ -12,6 +12,8 @@ export const SITE = {
   email: "Afineinstall@gmail.com",
   emailHref: "mailto:Afineinstall@gmail.com",
   facebook: "https://www.facebook.com/profile.php?id=61565698050427",
+  instagram: "https://www.instagram.com/afineinstall/",
+  instagramHandle: "@afineinstall",
   base: "Gainesville, Georgia",
   lat: 34.2979,
   lon: -83.8241,
