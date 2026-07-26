@@ -1,0 +1,5 @@
+node_modules/
+dist-ssr/
+# the filled in secrets file must never be committed
+public/api/config.php
+dist/api/config.php

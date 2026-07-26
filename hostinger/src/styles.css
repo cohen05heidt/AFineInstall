@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   A FINE INSTALL - independent brand layer
+   Locked palette: spruce ground + bone + one signal red accent.
+   Nothing below uses q-* tokens. Fonts arrive via <link> in __root.tsx.
+   ========================================================================== */
+:root {
+  --afi-ink: #071410;
+  --afi-ground: #0c1e19;
+  --afi-raised: #143028;
+  --afi-hair: #25443a;
+  --afi-hair-soft: #1a332b;
+  --afi-bone: #ede7da;
+  --afi-bone-dim: #9fb0a6;
+  --afi-bone-faint: #6c7f75;
+  --afi-signal: #d23b2c;
+  --afi-signal-lit: #e8543f;
+  --afi-signal-deep: #8e2419;
+  --afi-display: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --afi-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--afi-ink);
+    color: var(--afi-bone);
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--afi-ink);
+    color: var(--afi-bone);
+    font-family: var(--afi-display);
+    font-synthesis-weight: none;
+    overflow-x: hidden;
+  }
+  * { border-color: var(--afi-hair-soft); }
+  ::selection { background: var(--afi-signal); color: #fff; }
+  :focus-visible {
+    outline: 2px solid var(--afi-signal-lit);
+    outline-offset: 3px;
+  }
+  h1, h2, h3, h4 { font-family: var(--afi-display); font-weight: 700; }
+}
+
+@layer utilities {
+  .afi-mono {
+    font-family: var(--afi-mono);
+    font-feature-settings: "tnum" 1;
+    letter-spacing: 0.06em;
+  }
+  .afi-eyebrow {
+    font-family: var(--afi-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--afi-bone-faint);
+  }
+  .afi-display {
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+  .afi-body {
+    color: var(--afi-bone-dim);
+    line-height: 1.65;
+    max-width: 62ch;
+  }
+  /* hairline field: the one background texture, used on three sections */
+  .afi-field {
+    background-image:
+      linear-gradient(to right, var(--afi-hair-soft) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--afi-hair-soft) 1px, transparent 1px);
+    background-size: 96px 96px;
+    background-position: center top;
+  }
+  .afi-field-fade {
+    mask-image: radial-gradient(120% 80% at 50% 0%, #000 20%, transparent 78%);
+    -webkit-mask-image: radial-gradient(120% 80% at 50% 0%, #000 20%, transparent 78%);
+  }
+  /* one corner language for the whole page: sharp, with a single 2px softening */
+  .afi-sharp { border-radius: 2px; }
+  .afi-rise {
+    opacity: 1;
+    transform: translate3d(0, var(--afi-rise-y, 18px), 0);
+    transition:
+      transform 900ms cubic-bezier(0.16, 1, 0.3, 1) var(--afi-rise-delay, 0ms);
+    will-change: transform;
+  }
+  .afi-rise[data-shown="true"] { transform: translate3d(0, 0, 0); }
+  .afi-clip {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1100ms cubic-bezier(0.16, 1, 0.3, 1) var(--afi-rise-delay, 0ms);
+  }
+  .afi-clip[data-shown="true"] { clip-path: inset(0 0 0 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .afi-rise, .afi-clip {
+    transition: none !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+}
+
+/* map motion: rings draw once on load, the radar sweep is the only loop and
+   it sits on an instrument, so the loop is motivated rather than decorative */
+@keyframes afi-ring-in {
+  from { transform: scale(0.82); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes afi-sweep-spin { to { transform: rotate(360deg); } }
+@keyframes afi-ping-out {
+  0% { transform: scale(0.55); opacity: 0.9; }
+  70% { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+.afi-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: afi-ring-in 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--afi-ring-i) * 170ms + 120ms);
+}
+.afi-sweep { animation: afi-sweep-spin 9s linear infinite; }
+.afi-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: afi-ping-out 3.4s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .afi-ring, .afi-sweep, .afi-ping { animation: none !important; opacity: 1; }
+  .afi-sweep { opacity: 0.35; }
+}
+
+/* ==========================================================================
+   Phone layout. Three things need to change below 768px: the off grid steps
+   have to give their width back, the map has to crop to the part of the
+   region that is actually covered, and the map type has to grow in user
+   units so it survives being scaled down to a 390px screen.
+   ========================================================================== */
+
+/* off grid stepping: desktop only, so narrow screens keep their full measure */
+.afi-step-x { padding-left: 0; }
+@media (min-width: 768px) {
+  .afi-step-x { padding-left: calc(var(--afi-step, 0) * 0.9rem); }
+}
+
+/* the map crops to the covered radius on phones */
+@media (max-width: 767px) {
+  .afi-map-zoom {
+    transform: translate(var(--afi-mz-x), var(--afi-mz-y)) scale(var(--afi-mz-s));
+  }
+  /* sizes are multiplied by the map's own scale factor so they track the
+     frame instead of being pinned to one radius */
+  .afi-map-base { font-size: calc(var(--afi-k) * 40px); letter-spacing: calc(var(--afi-k) * 2.4px); }
+  .afi-map-city { font-size: calc(var(--afi-k) * 27px); }
+  .afi-map-min { font-size: calc(var(--afi-k) * 21px); }
+  .afi-map-ring { font-size: calc(var(--afi-k) * 25px); }
+  .afi-map-state { display: none; }
+  .afi-map-far { display: none; }
+}
