@@ -16,6 +16,7 @@ export function Contact() {
   const [done, setDone] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [picked, setPicked] = useState<string[]>([]);
+  const [emailed, setEmailed] = useState(false);
 
   const toggle = (option: string) =>
     setPicked((prev) =>
@@ -51,6 +52,7 @@ export function Contact() {
       const res = await submitQuote({ data: values });
       if (res.ok) {
         setDone(true);
+        setEmailed(Boolean(res.mail?.confirmed));
         form.reset();
         setPicked([]);
       } else {
@@ -135,7 +137,9 @@ export function Contact() {
               Got it. We will call you back.
             </h3>
             <p className="afi-body mt-4 text-base">
-              If it is urgent, {SITE.phone} rings straight through.
+              {emailed
+                ? `A confirmation is on its way to your inbox. If it is urgent, ${SITE.phone} rings straight through.`
+                : `If it is urgent, ${SITE.phone} rings straight through.`}
             </p>
             <button
               type="button"

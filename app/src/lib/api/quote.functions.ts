@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { bindings } from "../bindings.server";
+import { sendQuoteEmails } from "../email.server";
 
 /* Quote requests are written to this site's own D1 database. Nothing about
    this touches a third party, and the table is created on first use so a
@@ -64,5 +65,18 @@ export const submitQuote = createServerFn({ method: "POST" })
         data.message || null,
       )
       .run();
-    return { ok: true as const };
+
+    /* Saved first, emailed second. If email is not configured yet, or the
+       provider is down, the request is still on record and the customer still
+       sees a success state. */
+    const mail = await sendQuoteEmails({
+      name: data.name,
+      phone: data.phone,
+      email: data.email || "",
+      town: data.town || "",
+      service: data.service,
+      message: data.message || "",
+    });
+
+    return { ok: true as const, mail };
   });

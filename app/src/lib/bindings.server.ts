@@ -24,6 +24,12 @@ type AppEnv = {
   CONTAINER?: DurableObjectNamespace;
   HF_ENV?: string;
   APP_SLUG?: string;
+  /* Transactional email. Set through the platform secrets store, never
+     committed. If RESEND_API_KEY is absent the site still takes quote
+     requests, it just saves them without emailing anyone. */
+  RESEND_API_KEY?: string;
+  QUOTE_FROM_EMAIL?: string;
+  QUOTE_TO_EMAIL?: string;
 };
 
 export function bindings(): AppEnv {
