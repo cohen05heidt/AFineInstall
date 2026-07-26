@@ -27,6 +27,13 @@ type AppEnv = {
   /* Transactional email. Set through the platform secrets store, never
      committed. If RESEND_API_KEY is absent the site still takes quote
      requests, it just saves them without emailing anyone. */
+  /* preferred: send as the Gmail account itself over the Gmail API, which
+     means Google signs the mail and there is no domain to verify */
+  GMAIL_CLIENT_ID?: string;
+  GMAIL_CLIENT_SECRET?: string;
+  GMAIL_REFRESH_TOKEN?: string;
+  GMAIL_SENDER?: string;
+  /* fallback: an HTTP email provider, needs its own verified domain */
   RESEND_API_KEY?: string;
   QUOTE_FROM_EMAIL?: string;
   QUOTE_TO_EMAIL?: string;

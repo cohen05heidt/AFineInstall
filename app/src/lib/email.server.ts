@@ -1,9 +1,10 @@
 import { bindings } from "./bindings.server";
+import { transport } from "./mailer.server";
 import { SITE } from "./site";
 
 /* Transactional email for quote requests.
-   A Cloudflare Worker cannot open an SMTP connection, so this goes out over
-   Resend's HTTP API. Two messages per submission:
+   The transport lives in mailer.server.ts (Gmail API first, an email provider
+   second). This file only decides what the two messages say:
 
      1. the lead, to the shop, with reply-to set to the customer so a reply
         goes straight back to them
@@ -88,38 +89,13 @@ function row(label: string, value: string, href?: string) {
   </tr>`;
 }
 
-async function send(
-  key: string,
-  payload: Record<string, unknown>,
-): Promise<boolean> {
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) {
-      console.error("resend rejected the message", res.status, await res.text());
-      return false;
-    }
-    return true;
-  } catch (err) {
-    console.error("resend request failed", err);
-    return false;
-  }
-}
-
 export async function sendQuoteEmails(data: QuoteData): Promise<MailResult> {
-  const { RESEND_API_KEY, QUOTE_FROM_EMAIL, QUOTE_TO_EMAIL } = bindings();
-  if (!RESEND_API_KEY || !QUOTE_FROM_EMAIL) {
+  const post = transport();
+  if (!post) {
     return { configured: false, notified: false, confirmed: false };
   }
 
-  const to = QUOTE_TO_EMAIL || SITE.email;
-  const from = `A Fine Install <${QUOTE_FROM_EMAIL}>`;
+  const to = bindings().QUOTE_TO_EMAIL || SITE.email;
   const when = stamp();
   const wants = data.service;
   const headline = wants[0] ?? "an install";
@@ -166,13 +142,12 @@ export async function sendQuoteEmails(data: QuoteData): Promise<MailResult> {
     `Sent from the website on ${when}.`,
   ].join("\n");
 
-  const notified = await send(RESEND_API_KEY, {
-    from,
-    to: [to],
+  const notified = await post.send({
+    to,
     subject: `New quote request: ${data.name}${data.town ? `, ${data.town}` : ""} (${headline})`,
     html: leadHtml,
     text: leadText,
-    ...(data.email ? { reply_to: data.email } : {}),
+    ...(data.email ? { replyTo: data.email } : {}),
   });
 
   /* ---- 2. the confirmation, to the customer ---- */
@@ -212,13 +187,12 @@ export async function sendQuoteEmails(data: QuoteData): Promise<MailResult> {
       `${SITE.phone} / ${SITE.email}`,
     ].join("\n");
 
-    confirmed = await send(RESEND_API_KEY, {
-      from,
-      to: [data.email],
+    confirmed = await post.send({
+      to: data.email,
       subject: "Thank you for choosing A Fine Install",
       html: custHtml,
       text: custText,
-      reply_to: to,
+      replyTo: to,
     });
   }
 
