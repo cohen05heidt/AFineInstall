@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node prerender.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server.mjs"
   },
   "dependencies": {
+    "mysql2": "^3.11.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
