@@ -3,7 +3,7 @@
 export const SITE = {
   name: "A Fine Install",
   owner: "Stewart Tanner",
-  origin: "https://afineinstall.higgsfield.app",
+  origin: "https://afineinstall.com",
   blurb:
     "Starlink sales and installs, whole home WiFi, whole home sound, TV mounting, camera systems, wireless alarms and new construction prewire across North Georgia.",
   phone: "770-845-2453",

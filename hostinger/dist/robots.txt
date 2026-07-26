@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://afineinstall.higgsfield.app/sitemap.xml
+Sitemap: https://afineinstall.com/sitemap.xml

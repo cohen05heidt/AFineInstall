@@ -30,11 +30,15 @@ That produces `dist/`, which is the entire website: `index.html`, hashed
 
 The contents of `dist/` go into `public_html` on Hostinger.
 
-## The one thing to set before building
+## The domain
 
-`src/lib/site.ts` has an `origin` field. It is still pointing at the old
-Higgsfield address. Change it to the real domain and rebuild, because it feeds
-the canonical URL, the Open Graph tags, `robots.txt` and `sitemap.xml`.
+`src/lib/site.ts` has an `origin` field, already set to
+`https://afineinstall.com`. It feeds the canonical URL, the Open Graph tags,
+`robots.txt` and `sitemap.xml`. If the domain ever changes, change it there and
+rebuild rather than editing the output by hand.
+
+`.htaccess` forces HTTPS and redirects `www.afineinstall.com` to the bare
+domain, so Google sees one site rather than four variants.
 
 ## Secrets
 
