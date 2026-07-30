@@ -190,7 +190,7 @@ export function JourneyStage() {
                 <span className="text-[var(--afi-signal)]">wall plate</span>.
               </h1>
               <p className="afi-body mt-5 text-base md:text-lg">
-                Starlink sales and installs, whole home WiFi, sound, TV and camera
+                Satellite sales and installs, whole home WiFi, sound, TV and camera
                 systems across North Georgia.
               </p>
               <div className="mt-7 flex flex-wrap items-center gap-x-10 gap-y-6">
