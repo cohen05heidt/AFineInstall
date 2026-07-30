@@ -52,10 +52,7 @@ export function Footer() {
       </div>
 
       <div className="mx-auto mt-12 flex max-w-[1400px] flex-wrap items-center justify-between gap-4 border-t border-[var(--afi-hair-soft)] pt-6">
-        <p className="afi-mono text-[0.625rem] uppercase tracking-[0.16em] text-[var(--afi-bone-faint)]">
-          Starlink is a trademark of SpaceX. We are an independent installer and
-          reseller.
-        </p>
+        <p className="afi-mono text-[0.625rem] uppercase tracking-[0.16em] text-[var(--afi-bone-faint)]" />
         <p className="afi-mono text-[0.625rem] uppercase tracking-[0.16em] text-[var(--afi-bone-faint)]">
           Georgia &middot; South Carolina &middot; North Carolina
         </p>
